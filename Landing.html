@@ -1,0 +1,498 @@
+<!DOCTYPE html><html lang="nl"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Onze Reis - Digital Magazine</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Sacramento&amp;family=Inter:wght@300;400&amp;family=Be+Vietnam+Pro:wght@400;600&amp;display=swap" rel="stylesheet">
+    <style>
+            :root {
+                --primary: #7b5455;
+                --primary-light: #f4c2c2;
+                --accent-gold: #d4af37;
+                --accent-champagne: #e5c1a1;
+                --bg-gradient-start: #ffecf2;
+                --bg-gradient-end: #fcd5ce;
+            }
+    
+            body {
+                margin: 0;
+                background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+                background-attachment: fixed;
+                font-family: 'Be Vietnam Pro', sans-serif;
+                color: #1d1b1b;
+                overflow-x: hidden;
+                min-height: 100vh;
+            }
+    
+            .sacramento { font-family: 'Sacramento', cursive; }
+            .playfair { font-family: 'Playfair Display', serif; }
+    
+            /* Floating Bokeh Effect */
+            .bokeh-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: -1;
+                overflow: hidden;
+            }
+    
+            .bokeh {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(244, 194, 194, 0.3);
+                filter: blur(60px);
+                animation: float 25s infinite ease-in-out;
+            }
+    
+            .bokeh.gold {
+                background: rgba(212, 175, 55, 0.15);
+                filter: blur(40px);
+            }
+    
+            @keyframes float {
+                0%, 100% { transform: translate(0, 0) scale(1); }
+                33% { transform: translate(50px, -80px) scale(1.3); }
+                66% { transform: translate(-40px, 60px) scale(0.7); }
+            }
+    
+            /* Digital Magazine Layout & Transitions */
+            .page {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                overflow-y: auto;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.5s;
+            }
+    
+            .page.active {
+                opacity: 1;
+                visibility: visible;
+                z-index: 10;
+            }
+    
+            /* Scroll Content Wrapper */
+            .scroll-container {
+                padding: 10vh 5% 20vh 5%;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+    
+            /* Cinematic Scroll Animations */
+            .reveal-up {
+                opacity: 0;
+                transform: translateY(60px);
+                transition: opacity 1.2s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+            }
+    
+            .reveal-up.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+    
+            .image-parallax {
+                transform: scale(0.9);
+                transition: transform 1.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+                overflow: hidden;
+            }
+    
+            .image-parallax.is-visible {
+                transform: scale(1);
+            }
+    
+            /* Countdown Staggered Entrance */
+            @keyframes staggeredEntrance {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+    
+            /* Countdown Upgrade Styles */
+            .timer-unit {
+                background: rgba(255, 255, 255, 0.25);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-radius: 1rem;
+                padding: 3rem 2rem;
+                min-width: 160px;
+                box-shadow: 0 8px 32px 0 rgba(123, 84, 85, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.4);
+                animation: staggeredEntrance 1s cubic-bezier(0.22, 1, 0.36, 1) backwards, breathe 6s infinite ease-in-out 1s;
+            }
+    
+            .timer-unit:nth-child(1) { animation-delay: 0.2s, 1.2s; }
+            .timer-unit:nth-child(2) { animation-delay: 0.4s, 1.4s; }
+            .timer-unit:nth-child(3) { animation-delay: 0.6s, 1.6s; }
+            .timer-unit:nth-child(4) { animation-delay: 0.8s, 1.8s; }
+    
+            @keyframes breathe {
+                0%, 100% { transform: scale(1); box-shadow: 0 8px 32px 0 rgba(123, 84, 85, 0.08); }
+                50% { transform: scale(1.02); box-shadow: 0 12px 40px 0 rgba(123, 84, 85, 0.12); }
+            }
+    
+            /* Digit Transition Container */
+            .digit-wrapper {
+                height: 60px;
+                overflow: hidden;
+                position: relative;
+            }
+    
+            .digit-scroll {
+                transition: transform 0.8s cubic-bezier(0.45, 0, 0.55, 1);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+    
+            /* Romantic Button Upgrade */
+            .btn-romantic {
+                background: rgba(255, 255, 255, 0.1);
+                color: #7b5455;
+                border: 1.5px solid var(--accent-gold);
+                padding: 1.5rem 4rem;
+                letter-spacing: 0.25em;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                font-weight: 600;
+                transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+                display: inline-flex;
+                align-items: center;
+                gap: 16px;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 0 15px rgba(244, 194, 194, 0.3);
+                backdrop-filter: blur(4px);
+            }
+    
+            .btn-romantic::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(212, 175, 55, 0.1);
+                transform: translateY(100%);
+                transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+                z-index: -1;
+            }
+    
+            .btn-romantic:hover {
+                color: #7b5455;
+                transform: translateY(-4px) scale(1.03);
+                box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+                border-color: var(--accent-gold);
+            }
+    
+            .btn-romantic:hover::before {
+                transform: translateY(0);
+            }
+    
+            .heart-icon {
+                animation: beat 2s infinite;
+                display: inline-block;
+            }
+    
+            @keyframes beat {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.2); }
+            }
+    
+            .magazine-photo {
+                width: 100%;
+                height: 70vh;
+                object-fit: cover;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            }
+    
+            .countdown-label {
+                color: var(--accent-champagne);
+                font-weight: 600;
+            }
+    
+            /* Hide scrollbar but keep functionality */
+            .page::-webkit-scrollbar {
+                display: none;
+            }
+            .page {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        </style>
+    </head>
+    <body>
+    <!-- Bokeh Background -->
+    <div class="bokeh-container" id="bokeh"><div class="bokeh" style="width: 284.039px; height: 284.039px; left: 12.8122%; top: 97.3611%; animation-delay: 2.34022s; animation-duration: 21.1329s;"></div><div class="bokeh gold" style="width: 216.978px; height: 216.978px; left: 46.4417%; top: 91.9576%; animation-delay: 3.09114s; animation-duration: 21.0908s;"></div><div class="bokeh" style="width: 176.448px; height: 176.448px; left: 15.0734%; top: 1.48224%; animation-delay: 1.53565s; animation-duration: 15.2721s;"></div><div class="bokeh" style="width: 126.095px; height: 126.095px; left: 85.9421%; top: 89.0264%; animation-delay: 2.46012s; animation-duration: 20.6119s;"></div><div class="bokeh gold" style="width: 137.744px; height: 137.744px; left: 10.129%; top: 25.0857%; animation-delay: 0.389618s; animation-duration: 24.513s;"></div><div class="bokeh" style="width: 279.948px; height: 279.948px; left: 44.3056%; top: 56.0859%; animation-delay: 1.91044s; animation-duration: 18.0758s;"></div><div class="bokeh" style="width: 325.168px; height: 325.168px; left: 29.1849%; top: 12.9856%; animation-delay: 3.0351s; animation-duration: 16.5012s;"></div><div class="bokeh" style="width: 256.296px; height: 256.296px; left: 58.5526%; top: 31.1516%; animation-delay: 1.5631s; animation-duration: 15.0862s;"></div><div class="bokeh" style="width: 181.955px; height: 181.955px; left: 86.6421%; top: 19.6101%; animation-delay: 4.12728s; animation-duration: 24.4899s;"></div><div class="bokeh" style="width: 156.299px; height: 156.299px; left: 50.464%; top: 37.9962%; animation-delay: 4.79967s; animation-duration: 18.9593s;"></div><div class="bokeh" style="width: 121.116px; height: 121.116px; left: 61.9366%; top: 43.9957%; animation-delay: 2.16346s; animation-duration: 24.0014s;"></div><div class="bokeh gold" style="width: 317.012px; height: 317.012px; left: 68.8084%; top: 90.1104%; animation-delay: 3.85058s; animation-duration: 24.4993s;"></div><div class="bokeh" style="width: 396.248px; height: 396.248px; left: 20.8328%; top: 65.4033%; animation-delay: 0.742172s; animation-duration: 17.7633s;"></div><div class="bokeh" style="width: 341.46px; height: 341.46px; left: 6.82693%; top: 20.7438%; animation-delay: 4.24996s; animation-duration: 19.7476s;"></div><div class="bokeh" style="width: 110.419px; height: 110.419px; left: 17.5025%; top: 47.6782%; animation-delay: 1.88074s; animation-duration: 18.1401s;"></div><div class="bokeh" style="width: 138.526px; height: 138.526px; left: 73.4417%; top: 13.403%; animation-delay: 3.3823s; animation-duration: 21.9323s;"></div><div class="bokeh" style="width: 195.74px; height: 195.74px; left: 42.5523%; top: 91.0342%; animation-delay: 1.37581s; animation-duration: 23.2708s;"></div><div class="bokeh gold" style="width: 167.455px; height: 167.455px; left: 51.3356%; top: 79.2937%; animation-delay: 2.46493s; animation-duration: 23.0858s;"></div><div class="bokeh" style="width: 170.991px; height: 170.991px; left: 8.52866%; top: 82.6223%; animation-delay: 4.34344s; animation-duration: 18.7773s;"></div><div class="bokeh" style="width: 228.88px; height: 228.88px; left: 37.2171%; top: 11.0495%; animation-delay: 4.17631s; animation-duration: 21.8944s;"></div><div class="bokeh" style="width: 121.694px; height: 121.694px; left: 23.4675%; top: 3.47077%; animation-delay: 4.87488s; animation-duration: 23.5737s;"></div><div class="bokeh" style="width: 395.472px; height: 395.472px; left: 22.7653%; top: 94.4291%; animation-delay: 2.7579s; animation-duration: 17.4846s;"></div><div class="bokeh" style="width: 203.744px; height: 203.744px; left: 62.0611%; top: 28.1847%; animation-delay: 0.162816s; animation-duration: 15.7067s;"></div><div class="bokeh gold" style="width: 278.061px; height: 278.061px; left: 97.6346%; top: 37.8081%; animation-delay: 0.58815s; animation-duration: 20.7651s;"></div><div class="bokeh gold" style="width: 201.563px; height: 201.563px; left: 48.8862%; top: 98.9862%; animation-delay: 4.91578s; animation-duration: 24.5015s;"></div><div class="bokeh" style="width: 108.041px; height: 108.041px; left: 72.4758%; top: 17.1664%; animation-delay: 4.70065s; animation-duration: 19.5143s;"></div><div class="bokeh gold" style="width: 378.995px; height: 378.995px; left: 56.684%; top: 74.6465%; animation-delay: 3.47749s; animation-duration: 22.0022s;"></div><div class="bokeh gold" style="width: 204.417px; height: 204.417px; left: 27.629%; top: 55.1739%; animation-delay: 2.78544s; animation-duration: 22.5448s;"></div><div class="bokeh" style="width: 341.837px; height: 341.837px; left: 23.9616%; top: 38.3772%; animation-delay: 1.49128s; animation-duration: 24.0738s;"></div><div class="bokeh" style="width: 346.877px; height: 346.877px; left: 63.9112%; top: 20.8321%; animation-delay: 3.92018s; animation-duration: 16.3103s;"></div><div class="bokeh" style="width: 217.273px; height: 217.273px; left: 39.8155%; top: 4.939%; animation-delay: 2.62664s; animation-duration: 20.4858s;"></div><div class="bokeh gold" style="width: 148.461px; height: 148.461px; left: 49.7355%; top: 84.3611%; animation-delay: 2.34192s; animation-duration: 24.9394s;"></div><div class="bokeh gold" style="width: 183.231px; height: 183.231px; left: 74.9654%; top: 86.7942%; animation-delay: 4.0101s; animation-duration: 19.6244s;"></div><div class="bokeh gold" style="width: 398.879px; height: 398.879px; left: 14.8667%; top: 69.673%; animation-delay: 2.02081s; animation-duration: 19.5686s;"></div><div class="bokeh" style="width: 278.524px; height: 278.524px; left: 28.7966%; top: 76.7986%; animation-delay: 3.96132s; animation-duration: 18.1082s;"></div><div class="bokeh" style="width: 213.872px; height: 213.872px; left: 24.5764%; top: 6.66747%; animation-delay: 1.84417s; animation-duration: 19.7806s;"></div><div class="bokeh" style="width: 144.883px; height: 144.883px; left: 2.33546%; top: 3.39343%; animation-delay: 0.869857s; animation-duration: 19.8939s;"></div><div class="bokeh" style="width: 113.719px; height: 113.719px; left: 47.3432%; top: 57.9373%; animation-delay: 4.81379s; animation-duration: 20.0892s;"></div><div class="bokeh" style="width: 184.366px; height: 184.366px; left: 43.0498%; top: 81.6597%; animation-delay: 4.37411s; animation-duration: 24.4135s;"></div><div class="bokeh" style="width: 217.86px; height: 217.86px; left: 6.94195%; top: 53.6967%; animation-delay: 4.19383s; animation-duration: 23.3119s;"></div><div class="bokeh" style="width: 119.898px; height: 119.898px; left: 5.02867%; top: 72.7167%; animation-delay: 2.29638s; animation-duration: 21.9821s;"></div><div class="bokeh" style="width: 163.769px; height: 163.769px; left: 7.77147%; top: 80.1785%; animation-delay: 3.97546s; animation-duration: 21.0291s;"></div><div class="bokeh gold" style="width: 146.296px; height: 146.296px; left: 68.9904%; top: 83.8698%; animation-delay: 3.34049s; animation-duration: 19.4407s;"></div><div class="bokeh gold" style="width: 262.765px; height: 262.765px; left: 94.3921%; top: 89.1053%; animation-delay: 2.67303s; animation-duration: 22.3579s;"></div><div class="bokeh" style="width: 357.107px; height: 357.107px; left: 52.6804%; top: 14.8721%; animation-delay: 3.57958s; animation-duration: 22.9927s;"></div><div class="bokeh" style="width: 182.332px; height: 182.332px; left: 2.67527%; top: 28.6032%; animation-delay: 0.988393s; animation-duration: 21.7935s;"></div><div class="bokeh" style="width: 265.31px; height: 265.31px; left: 64.9407%; top: 13.3384%; animation-delay: 0.560486s; animation-duration: 17.3731s;"></div><div class="bokeh" style="width: 178.999px; height: 178.999px; left: 45.9355%; top: 15.2915%; animation-delay: 3.42645s; animation-duration: 17.8391s;"></div><div class="bokeh gold" style="width: 215.621px; height: 215.621px; left: 89.0866%; top: 66.8189%; animation-delay: 0.6172s; animation-duration: 20.123s;"></div><div class="bokeh gold" style="width: 212.062px; height: 212.062px; left: 41.0265%; top: 42.7993%; animation-delay: 4.75632s; animation-duration: 22.5334s;"></div></div>
+    <!-- Page 1: Landing / Countdown -->
+    <section class="page active" id="page-1">
+    <div class="scroll-container min-h-[150vh] flex flex-col items-center justify-center">
+    <div class="reveal-up text-center mb-24 is-visible">
+    <h2 class="sacramento text-6xl md:text-9xl text-primary mb-6">Aftellen naar jouw verjaardag</h2>
+    <div class="mt-12 mb-16 space-y-4">
+    <p class="playfair text-2xl md:text-3xl text-primary/70 tracking-widest uppercase">Voor mijn Charlieffe</p>
+    <p class="playfair text-xl md:text-2xl text-primary/60 italic font-light tracking-widest">- Jouke</p>
+    </div>
+    
+    </div>
+    <div class="flex flex-wrap justify-center gap-6 md:gap-8 mb-32" id="countdown">
+    <div class="timer-unit text-center">
+    <div class="digit-wrapper">
+    <span class="block playfair text-5xl font-light text-gray-800" id="days" style="transition: 0.4s ease-in-out;">49</span>
+    </div>
+    <span class="text-[11px] uppercase tracking-[0.4em] countdown-label mt-4 block">Dagen</span>
+    </div>
+    <div class="timer-unit text-center">
+    <div class="digit-wrapper">
+    <span class="block playfair text-5xl font-light text-gray-800" id="hours" style="transition: 0.4s ease-in-out;">02</span>
+    </div>
+    <span class="text-[11px] uppercase tracking-[0.4em] countdown-label mt-4 block">Uren</span>
+    </div>
+    <div class="timer-unit text-center">
+    <div class="digit-wrapper">
+    <span class="block playfair text-5xl font-light text-gray-800" id="minutes" style="transition: 0.4s ease-in-out; transform: translateY(0px); opacity: 1;">54</span>
+    </div>
+    <span class="text-[11px] uppercase tracking-[0.4em] countdown-label mt-4 block">Minuten</span>
+    </div>
+    <div class="timer-unit text-center">
+    <div class="digit-wrapper">
+    <span class="block playfair text-5xl font-light text-gray-800" id="seconds" style="transition: 0.4s ease-in-out; transform: translateY(-20px); opacity: 0;">34</span>
+    </div>
+    <span class="text-[11px] uppercase tracking-[0.4em] countdown-label mt-4 block">Sec</span>
+    </div>
+    </div>
+    <div class="reveal-up">
+    <button class="pointer-events-none opacity-60 border border-primary text-primary px-12 py-6 tracking-widest uppercase text-xs">
+                    Kijk je mee? <span class="heart-icon">❤️</span>
+    </button>
+    </div>
+    </div>
+    </section>
+    <!-- Page 2: Story -->
+    <section class="page" id="page-2">
+    <div class="scroll-container">
+    <div class="grid lg:grid-cols-12 gap-16 items-center min-h-screen">
+    <div class="lg:col-span-7 image-parallax reveal-up is-visible">
+    <img alt="Samen" class="magazine-photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXl0sswQ0KWxpd_VjaGugtp5s7VkGYimqkJbQ_60-z9vVc35o8QAxOUQXUeQYKovexy2ubVYbUu6R4eHkisrg0VOo2TkjO6KrmAYkRZwIzd2o3GGJ_D-TYPxE74emYDHAMhB86Pratly8bMr6UxbO9jHUPfbGQa8q_nqhO2FKZ7y_GzzFvvcLp00GUqGsptMIZC7wTSeEPh2oXUM8a0yBjBlttB3eZCaj1P-8wF3XDyXDej21omMJnnPWWWSh-S1nIwTYW-42DFaiG">
+    </div>
+    <div class="lg:col-span-5 reveal-up is-visible">
+    <h3 class="text-xs uppercase tracking-[0.4em] text-gray-400 mb-8">Hoofdstuk I</h3>
+    <h2 class="playfair text-5xl md:text-6xl mb-10 leading-tight text-gray-800">Lieve Woorden</h2>
+    <div class="space-y-8 text-gray-600 leading-relaxed text-lg font-light">
+    <p class="">Vandaag vieren we niet zomaar een jaar, maar alle momenten die ons hebben gebracht waar we nu zijn. Vanaf die allereerste blik tot de stille ochtenden vol gelach.</p>
+    <blockquote class="italic text-primary border-l-4 border-primary-light pl-8 my-12 text-2xl sacramento py-2">
+                            "Je bent de rust in mijn storm en de zon op mijn meest grijze dagen."
+                        </blockquote>
+    <p class="">In jouw ogen zie ik een toekomst die elke dag mooier wordt. Je passie, je zachtheid en de manier waarop je de wereld om je heen verlicht is iets wat ik elke dag koester.</p>
+    </div>
+    </div>
+    </div>
+    <div class="my-60 reveal-up">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row gap-16 items-center">
+    <div class="flex-1 order-2 md:order-1">
+    <p class="playfair italic text-3xl text-gray-700 leading-relaxed">"Sommige verhalen worden geschreven in de sterren, het onze wordt elke dag geleefd."</p>
+    </div>
+    <div class="flex-1 order-1 md:order-2 image-parallax">
+    <img alt="Detail" class="w-full aspect-[4/5] object-cover shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-KDAdsKw_1C3qbGJ1mL6aI-wH7s192je-bogSFbFeZnWm9OM9RDcTQxqWn4Cn7c_LCnoqVRlS00Zj9MjLGMl3iGEwpJR61KxELxnfzsDwyH2rh70DPpwov81UGndHOpBc-l05sC3WV_rDkPkWP_iwed4rc9mIzbGAJoT5ztJNyn-RPw5BVMBkaModogSElPguZEo8BqJD_jRRIyH9Oo2wBtCMBddsJvr9g1uFh7UKH1oUiIcA1umUMabS2APJ1-h6T_HfGtRNiQzV">
+    </div>
+    </div>
+    </div>
+    <div class="flex justify-center pb-20">
+    <button class="btn-romantic reveal-up" onclick="nextPage(3)">
+                    Naar de galerij <span class="heart-icon">→</span>
+    </button>
+    </div>
+    </div>
+    </section>
+    <!-- Page 3: Gallery (Final Chapter) -->
+    <section class="page" id="page-3">
+    <div class="scroll-container">
+    <div class="text-center mb-32 reveal-up is-visible">
+    <h3 class="text-xs uppercase tracking-[0.4em] text-gray-400 mb-6">Portfolio</h3>
+    <h2 class="playfair text-5xl md:text-7xl text-gray-800">Momenten van Geluk</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-24 md:gap-40">
+    <div class="reveal-up space-y-8 is-visible">
+    <div class="image-parallax aspect-[3/4] is-visible">
+    <img alt="Liefde" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV1HOvyRammevm7eGJg3biSOslCpmT_b5INQDTW9Codh9QmkjwOVwHIgVKr3Za6MGkuC68T6bI48Dj-euirEj8MtlFxnxyhY1Mgj6WTaaHLF-OuIeXsuZEgeuHouuj4UR4K3cyKAWQpfjXAokseDa50IvcK3QNLEt3_tjc12N5bU3OHZxy8uGh5LDsRS1U49T6-BRuNovdp5osRc3NPFm4648Yr_s7c0jPRiRcU4SBnhwTsBmgKwtShAVAchEp2rlgtH_BCoWB5MPf">
+    </div>
+    <p class="sacramento text-3xl text-primary text-center">Zonnige middagen</p>
+    </div>
+    <div class="reveal-up space-y-8 md:mt-40 is-visible">
+    <div class="image-parallax aspect-[3/4] is-visible">
+    <img alt="Vakantie" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDm8ja4P8trj3sk7IXdv8DdbjWlAgFf6pn3lVY_4FX2uJ4GlF54a9br_-aOiXV3vQBmrtcCtj_OqzkpJVudI5ovoIUyEMdjrHNOvkt8mFx9qpza29D-VSBaOXY_6r-NCRP3iANE2CWLJu9d9-LOC-kAsgh0RCAOF5UBgfb86lR-br1ZUAwUMM3koUU80C0MtcYMdFYiuhBL9oeghIPAxiD6lH_I8-aWZncuD-Xrg0qyEwiFSWxdKm861lEcqsqpjUNhfu_Q7dHWbXba">
+    </div>
+    <p class="sacramento text-3xl text-primary text-center">Hand in hand</p>
+    </div>
+    <div class="reveal-up space-y-8">
+    <div class="image-parallax aspect-[4/3]">
+    <img alt="Feest" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVHyeLv519OlyGQBMgxnm1Qon9zo8XBbfA7OOsNJBLFyCKLINbjoeVQXvIwE5DbuRi5HxSHtA58XZSn8br56e4mgSA34Ix-0F_L3v0hRY_PPaZPUHdiNMYKZJ2GrPqQQvUVV0ogfQJh8jugklufAhZS5V0CznwxZ7zbemLsX12qVguc37BnOKYrrMZIvD1PjY7DMgBuieK5UBfvsg3kgzKlzSMV09mqo6Oh71nlXOTY8eJu9zhKVt-VrzSrlUrHj8vuShZD6rLe3vT">
+    </div>
+    <p class="sacramento text-3xl text-primary text-center">Bij de zee</p>
+    </div>
+    <div class="reveal-up space-y-8 md:-mt-20">
+    <div class="image-parallax aspect-[3/4]">
+    <img alt="Lachen" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR6sYrh69TkKUA7_8QX0TnmXiun_VLGcJNlP9yy6KzC9jeyNFlrqdRk6n9U7KHaZURGj8akF7u1T0YvIb0yegotj4CX99KH756zAzZ3Uqg7yoZ_HGtD8NacyudCX8s5lTPCIrH8TypxOCVCLSCLL_zTDDgTijMhCdsh2YGR1LPPgDwlDq5R24eUoQUkj3q_zGc2mDHj-DnvGxM-xFhqBYUXudR7JyIDLObaUY86YXxMq7-NFasEjB6tct9W5vbk8pdfpqHXJd_iYeu">
+    </div>
+    <p class="sacramento text-3xl text-primary text-center">Gewoon omdat</p>
+    </div>
+    </div>
+    <div class="mt-80 mb-40 text-center max-w-3xl mx-auto reveal-up">
+    <h3 class="sacramento text-6xl text-primary mb-12">Bedankt dat je er bent.</h3>
+    <p class="playfair text-2xl text-gray-600 italic leading-relaxed mb-16">
+                    "Sommige mensen zoeken hun hele leven naar wat wij in een oogwenk hebben gevonden. Bedankt dat je elke dag mijn wereld mooier maakt."
+                </p>
+    <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-24">
+    <button class="btn-romantic" onclick="nextPage(1)">
+                        Begin Opnieuw <span class="heart-icon">↺</span>
+    </button>
+    <button class="px-12 py-6 border border-primary text-primary hover:bg-primary-light/20 transition-all text-xs tracking-[0.3em] uppercase font-semibold">
+                        Deel onze reis
+                    </button>
+    </div>
+    <p class="sacramento text-4xl text-gray-400">Met alle liefde, X</p>
+    </div>
+    </div>
+    </section>
+    <script>
+        // --- 1. Bokeh Background Generation ---
+        const bokehContainer = document.getElementById('bokeh');
+        for (let i = 0; i < 25; i++) {
+            const dot = document.createElement('div');
+            const isGold = Math.random() > 0.7;
+            dot.className = isGold ? 'bokeh gold' : 'bokeh';
+            const size = Math.random() * 300 + 100;
+            dot.style.width = size + 'px';
+            dot.style.height = size + 'px';
+            dot.style.left = Math.random() * 100 + '%';
+            dot.style.top = Math.random() * 100 + '%';
+            dot.style.animationDelay = (Math.random() * 5) + 's';
+            dot.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            bokehContainer.appendChild(dot);
+        }
+    
+        // --- 2. Page Navigation Logic ---
+        let currentPage = 1;
+        function nextPage(pageNumber) {
+            const current = document.getElementById(`page-${currentPage}`);
+            const next = document.getElementById(`page-${pageNumber}`);
+    
+            if (!next) return;
+    
+            current.style.opacity = '0';
+            
+            setTimeout(() => {
+                current.classList.remove('active');
+                next.classList.add('active');
+                next.scrollTo(0, 0);
+                currentPage = pageNumber;
+                initObserver(); // Re-init for the new page
+            }, 800);
+        }
+    
+        // --- 3. Scroll-Driven Animations (Intersection Observer) ---
+        function initObserver() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+    
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, observerOptions);
+    
+            document.querySelectorAll('.reveal-up, .image-parallax').forEach(el => {
+                observer.observe(el);
+            });
+        }
+    
+        window.addEventListener('DOMContentLoaded', initObserver);
+    
+        // --- 4. Enhanced Countdown Logic with Digit Transitions ---
+        const targetDate = new Date('July 29, 2026 00:00:00').getTime();
+    
+        function updateAnimatedDigit(id, newValue) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            
+            const currentValue = el.innerText;
+            if (currentValue === newValue) return;
+    
+            el.style.transform = 'translateY(-20px)';
+            el.style.opacity = '0';
+            
+            setTimeout(() => {
+                el.innerText = newValue;
+                el.style.transform = 'translateY(20px)';
+                void el.offsetWidth;
+                el.style.transform = 'translateY(0)';
+                el.style.opacity = '1';
+            }, 400);
+        }
+    
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+    
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+            updateAnimatedDigit('days', days.toString().padStart(2, '0'));
+            updateAnimatedDigit('hours', hours.toString().padStart(2, '0'));
+            updateAnimatedDigit('minutes', minutes.toString().padStart(2, '0'));
+            updateAnimatedDigit('seconds', seconds.toString().padStart(2, '0'));
+    
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                const cd = document.getElementById('countdown');
+                if (cd) cd.innerHTML = "<h2 class='playfair text-5xl text-primary'>Gefeliciteerd!</h2>";
+            }
+        }
+    
+        function initCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+    
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minsEl = document.getElementById('minutes');
+            const secsEl = document.getElementById('seconds');
+    
+            if (daysEl) daysEl.innerText = d.toString().padStart(2, '0');
+            if (hoursEl) hoursEl.innerText = h.toString().padStart(2, '0');
+            if (minsEl) minsEl.innerText = m.toString().padStart(2, '0');
+            if (secsEl) secsEl.innerText = s.toString().padStart(2, '0');
+            
+            document.querySelectorAll('#countdown span.playfair').forEach(el => {
+                el.style.transition = 'all 0.4s ease-in-out';
+            });
+        }
+    
+        initCountdown();
+        const countdownInterval = setInterval(updateCountdown, 1000);
+    </script>
+    
+    
+    
+    
+    </body></html>
