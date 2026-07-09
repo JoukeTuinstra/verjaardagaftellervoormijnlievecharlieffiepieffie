@@ -2,10 +2,90 @@
 
 <html class="overflow-x-hidden min-h-[100dvh]" lang="nl" style="background: linear-gradient(135deg, rgb(255, 236, 242) 0%, rgb(252, 213, 206) 100%);"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
 <title>Onze Reis - Digital Magazine</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Sacramento&amp;family=Inter:wght@300;400&amp;family=Be+Vietnam+Pro:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-surface-variant": "#504444",
+                "on-error": "#ffffff",
+                "inverse-surface": "#323030",
+                "primary-fixed-dim": "#ecbaba",
+                "primary-container": "#f4c2c2",
+                "tertiary-container": "#ffbdc5",
+                "on-secondary-fixed": "#241a09",
+                "inverse-on-surface": "#f5efef",
+                "outline": "#827473",
+                "secondary-fixed-dim": "#d8c3aa",
+                "on-primary": "#ffffff",
+                "surface-tint": "#7b5455",
+                "on-secondary": "#ffffff",
+                "on-tertiary-container": "#84444f",
+                "on-surface": "#1d1b1b",
+                "surface-container-low": "#f8f2f2",
+                "secondary-fixed": "#f5dfc5",
+                "secondary": "#6b5c47",
+                "on-background": "#1d1b1b",
+                "tertiary": "#8c4b55",
+                "on-tertiary": "#ffffff",
+                "on-secondary-container": "#70604b",
+                "on-primary-container": "#734e4e",
+                "on-primary-fixed": "#2f1314",
+                "surface-variant": "#e7e1e1",
+                "secondary-container": "#f2dcc2",
+                "surface-container-highest": "#e7e1e1",
+                "outline-variant": "#d4c2c2",
+                "tertiary-fixed-dim": "#ffb2bc",
+                "primary-fixed": "#ffdad9",
+                "surface": "#fef8f8",
+                "on-primary-fixed-variant": "#613d3e",
+                "error": "#ba1a1a",
+                "on-secondary-fixed-variant": "#524531",
+                "tertiary-fixed": "#ffd9dd",
+                "surface-container-lowest": "#ffffff",
+                "primary": "#7b5455",
+                "on-tertiary-fixed-variant": "#70343e",
+                "on-tertiary-fixed": "#3a0915",
+                "surface-dim": "#ded9d9",
+                "surface-container": "#f2eced",
+                "surface-bright": "#fef8f8",
+                "error-container": "#ffdad6",
+                "on-error-container": "#93000a",
+                "inverse-primary": "#ecbaba",
+                "background": "#fef8f8",
+                "surface-container-high": "#ece7e7"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "base": "8px",
+                "content-gap": "32px",
+                "max-width": "1100px",
+                "container-padding": "24px",
+                "section-gap": "80px"
+        },
+        "fontFamily": {
+                "display-decorative": ["Sacramento"],
+                "body-md": ["Be Vietnam Pro"],
+                "body-lg": ["Be Vietnam Pro"],
+                "headline-lg": ["Playfair Display"],
+                "headline-lg-mobile": ["Playfair Display"],
+                "label-sm": ["Be Vietnam Pro"],
+                "headline-md": ["Playfair Display"]
+        }
+      },
+    },
+  }
+</script>
 <style>
         :root {
             --primary: #7b5455;
@@ -22,6 +102,7 @@
             width: 100%;
             margin: 0;
             padding: 0;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -34,7 +115,6 @@
         .sacramento { font-family: 'Sacramento', cursive; }
         .playfair { font-family: 'Playfair Display', serif; }
 
-        /* Performance Optimization: Page Separation */
         .page {
             display: none;
             width: 100%;
@@ -51,11 +131,10 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translate3d(0, 10px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
 
-        /* Bokeh Background Optimization */
         .bokeh-container {
             position: fixed;
             top: 0;
@@ -95,11 +174,16 @@
             min-height: 100dvh;
         }
 
-        /* Hardware Accelerated Reveal Animations */
+        /* Performance Optimizations: Visibility & Containment */
+        .gallery-section {
+            content-visibility: auto;
+            contain-intrinsic-size: 1000px;
+        }
+
         .reveal-up {
             opacity: 0;
             transform: translate3d(0, 40px, 0);
-            transition: opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+            transition: opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
             will-change: transform, opacity;
         }
 
@@ -110,7 +194,7 @@
 
         .image-parallax {
             transform: scale(0.95);
-            transition: transform 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
             overflow: hidden;
             will-change: transform;
         }
@@ -119,34 +203,30 @@
             transform: scale(1);
         }
 
-        /* Countdown Upgrade Styles */
+        /* Aspect Ratio Containers to prevent CLS */
+        .img-aspect-box {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            background-color: rgba(123, 84, 85, 0.05);
+        }
+
         .timer-unit {
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: 1rem;
-            padding: 2.5rem 1.5rem;
-            min-width: 140px;
+            padding: 2rem 1.5rem;
+            min-width: 120px;
             box-shadow: 0 8px 32px 0 rgba(123, 84, 85, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.4);
             will-change: transform;
-            animation: staggeredEntrance 1s cubic-bezier(0.22, 1, 0.36, 1) backwards, breathe 8s infinite ease-in-out 1s;
+            animation: staggeredEntrance 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
         }
 
         @keyframes staggeredEntrance {
             from { opacity: 0; transform: translate3d(0, 20px, 0); }
             to { opacity: 1; transform: translate3d(0, 0, 0); }
-        }
-
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.015); }
-        }
-
-        .digit-wrapper {
-            height: 60px;
-            overflow: hidden;
-            position: relative;
         }
 
         .btn-romantic {
@@ -158,7 +238,7 @@
             text-transform: uppercase;
             font-size: 0.75rem;
             font-weight: 600;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 12px;
@@ -186,147 +266,133 @@
 
         .magazine-photo {
             width: 100%;
-            height: 70vh;
+            height: auto;
+            aspect-ratio: 3/4;
             object-fit: cover;
             box-shadow: 0 20px 50px rgba(0,0,0,0.05);
         }
     </style>
 </head>
-<body class="overflow-x-hidden min-h-[100dvh] w-full">
-<!-- Hardware Accelerated Fixed Background -->
-<div class="fixed inset-0 w-screen h-[100dvh] z-[-1] pointer-events-none min-h-screen" style="transform: translate3d(0,0,0); background: linear-gradient(135deg, #ffecf2 0%, #fcd5ce 100%);"></div>
-<!-- Bokeh Background -->
-<div class="bokeh-container" id="bokeh"><div class="bokeh gold" style="width: 273.744px; height: 273.744px; left: 95.9998%; top: 76.3548%; animation-delay: 1.71054s; animation-duration: 25.7405s;"></div><div class="bokeh" style="width: 129.76px; height: 129.76px; left: 28.5031%; top: 48.8476%; animation-delay: 3.73355s; animation-duration: 21.8303s;"></div><div class="bokeh" style="width: 103.333px; height: 103.333px; left: 4.33323%; top: 85.7362%; animation-delay: 4.47329s; animation-duration: 27.3007s;"></div><div class="bokeh" style="width: 165.62px; height: 165.62px; left: 27.6619%; top: 1.37569%; animation-delay: 1.50447s; animation-duration: 24.6436s;"></div><div class="bokeh" style="width: 337.94px; height: 337.94px; left: 81.6017%; top: 66.191%; animation-delay: 2.62262s; animation-duration: 26.2831s;"></div><div class="bokeh" style="width: 186.982px; height: 186.982px; left: 82.4148%; top: 50.4228%; animation-delay: 1.76074s; animation-duration: 27.9754s;"></div><div class="bokeh" style="width: 338.277px; height: 338.277px; left: 94.1153%; top: 69.6308%; animation-delay: 2.09699s; animation-duration: 29.9632s;"></div><div class="bokeh gold" style="width: 160.933px; height: 160.933px; left: 56.4257%; top: 63.0277%; animation-delay: 4.45637s; animation-duration: 22.0628s;"></div><div class="bokeh" style="width: 187.22px; height: 187.22px; left: 36.0735%; top: 99.4593%; animation-delay: 3.87267s; animation-duration: 25.6363s;"></div><div class="bokeh" style="width: 287.519px; height: 287.519px; left: 44.1947%; top: 0.230775%; animation-delay: 4.60542s; animation-duration: 28.3513s;"></div><div class="bokeh" style="width: 124.637px; height: 124.637px; left: 80.5503%; top: 17.3323%; animation-delay: 2.15497s; animation-duration: 26.3931s;"></div><div class="bokeh gold" style="width: 325.138px; height: 325.138px; left: 18.9392%; top: 19.3423%; animation-delay: 1.741s; animation-duration: 20.466s;"></div><div class="bokeh gold" style="width: 199.872px; height: 199.872px; left: 87.2801%; top: 8.83612%; animation-delay: 3.32702s; animation-duration: 23.8704s;"></div><div class="bokeh gold" style="width: 330.794px; height: 330.794px; left: 99.7077%; top: 97.7919%; animation-delay: 4.31132s; animation-duration: 28.9148s;"></div><div class="bokeh gold" style="width: 110.384px; height: 110.384px; left: 26.7742%; top: 5.96707%; animation-delay: 4.22552s; animation-duration: 25.6314s;"></div><div class="bokeh" style="width: 316.279px; height: 316.279px; left: 58.8921%; top: 16.0832%; animation-delay: 1.12717s; animation-duration: 29.7726s;"></div><div class="bokeh" style="width: 217.837px; height: 217.837px; left: 62.5798%; top: 78.922%; animation-delay: 4.13396s; animation-duration: 23.7863s;"></div><div class="bokeh gold" style="width: 154.124px; height: 154.124px; left: 21.3329%; top: 21.5081%; animation-delay: 0.403336s; animation-duration: 25.6208s;"></div><div class="bokeh" style="width: 160.693px; height: 160.693px; left: 22.3448%; top: 27.3575%; animation-delay: 4.46178s; animation-duration: 22.3321s;"></div><div class="bokeh" style="width: 177.686px; height: 177.686px; left: 23.9887%; top: 82.3255%; animation-delay: 3.02759s; animation-duration: 26.0971s;"></div><div class="bokeh" style="width: 106.45px; height: 106.45px; left: 48.4261%; top: 31.3659%; animation-delay: 0.970666s; animation-duration: 29.2459s;"></div><div class="bokeh gold" style="width: 166.928px; height: 166.928px; left: 17.5776%; top: 55.0653%; animation-delay: 2.8748s; animation-duration: 23.716s;"></div><div class="bokeh" style="width: 246.733px; height: 246.733px; left: 80.6989%; top: 55.6718%; animation-delay: 1.70846s; animation-duration: 21.4613s;"></div><div class="bokeh" style="width: 235.341px; height: 235.341px; left: 95.2886%; top: 42.8642%; animation-delay: 2.36418s; animation-duration: 26.5345s;"></div><div class="bokeh gold" style="width: 114.387px; height: 114.387px; left: 17.8428%; top: 86.2996%; animation-delay: 2.51368s; animation-duration: 22.4548s;"></div><div class="bokeh" style="width: 143.232px; height: 143.232px; left: 29.667%; top: 64.2516%; animation-delay: 0.792227s; animation-duration: 26.4826s;"></div><div class="bokeh" style="width: 216.799px; height: 216.799px; left: 36.2855%; top: 97.1602%; animation-delay: 1.54433s; animation-duration: 21.1222s;"></div><div class="bokeh" style="width: 211.752px; height: 211.752px; left: 17.7471%; top: 17.2713%; animation-delay: 2.81495s; animation-duration: 28.0036s;"></div><div class="bokeh" style="width: 101.658px; height: 101.658px; left: 3.77766%; top: 59.5616%; animation-delay: 2.28102s; animation-duration: 23.4436s;"></div><div class="bokeh" style="width: 303.032px; height: 303.032px; left: 0.205816%; top: 13.2443%; animation-delay: 1.45343s; animation-duration: 25.5091s;"></div><div class="bokeh" style="width: 242.837px; height: 242.837px; left: 57.1823%; top: 88.9042%; animation-delay: 0.556507s; animation-duration: 25.0319s;"></div><div class="bokeh gold" style="width: 333.696px; height: 333.696px; left: 46.1481%; top: 14.627%; animation-delay: 2.65s; animation-duration: 27.3836s;"></div><div class="bokeh" style="width: 111.269px; height: 111.269px; left: 2.42236%; top: 38.4151%; animation-delay: 4.21048s; animation-duration: 22.9585s;"></div><div class="bokeh" style="width: 303.92px; height: 303.92px; left: 46.8204%; top: 24.1322%; animation-delay: 2.13163s; animation-duration: 21.3151s;"></div><div class="bokeh" style="width: 148.52px; height: 148.52px; left: 48.0201%; top: 53.3243%; animation-delay: 2.67741s; animation-duration: 21.7089s;"></div><div class="bokeh gold" style="width: 328.843px; height: 328.843px; left: 89.2971%; top: 33.9848%; animation-delay: 1.69827s; animation-duration: 20.3878s;"></div><div class="bokeh gold" style="width: 164.174px; height: 164.174px; left: 63.411%; top: 30.0062%; animation-delay: 2.06242s; animation-duration: 27.1862s;"></div><div class="bokeh" style="width: 230.993px; height: 230.993px; left: 88.9815%; top: 75.7222%; animation-delay: 0.506233s; animation-duration: 25.0512s;"></div><div class="bokeh" style="width: 176.123px; height: 176.123px; left: 83.5616%; top: 10.9008%; animation-delay: 4.93874s; animation-duration: 21.5565s;"></div><div class="bokeh" style="width: 214.301px; height: 214.301px; left: 39.1431%; top: 53.0269%; animation-delay: 2.31339s; animation-duration: 20.9041s;"></div><div class="bokeh gold" style="width: 209.327px; height: 209.327px; left: 32.4434%; top: 32.7535%; animation-delay: 2.97759s; animation-duration: 22.0392s;"></div><div class="bokeh" style="width: 220.797px; height: 220.797px; left: 96.244%; top: 78.9416%; animation-delay: 0.147634s; animation-duration: 25.1935s;"></div><div class="bokeh gold" style="width: 318.691px; height: 318.691px; left: 32.7757%; top: 84.4751%; animation-delay: 3.00656s; animation-duration: 21.042s;"></div><div class="bokeh" style="width: 246.384px; height: 246.384px; left: 59.7222%; top: 55.0982%; animation-delay: 3.5658s; animation-duration: 24.2831s;"></div><div class="bokeh" style="width: 340.928px; height: 340.928px; left: 96.8663%; top: 20.1331%; animation-delay: 2.35546s; animation-duration: 20.708s;"></div><div class="bokeh" style="width: 211.657px; height: 211.657px; left: 47.9487%; top: 70.6061%; animation-delay: 0.336216s; animation-duration: 26.2346s;"></div><div class="bokeh" style="width: 203.445px; height: 203.445px; left: 87.0767%; top: 2.72614%; animation-delay: 4.72317s; animation-duration: 28.3758s;"></div><div class="bokeh" style="width: 149.659px; height: 149.659px; left: 39.2732%; top: 46.3101%; animation-delay: 4.80308s; animation-duration: 20.604s;"></div><div class="bokeh" style="width: 230.508px; height: 230.508px; left: 87.6833%; top: 64.1494%; animation-delay: 3.63141s; animation-duration: 28.225s;"></div><div class="bokeh" style="width: 219.378px; height: 219.378px; left: 50.5819%; top: 57.6634%; animation-delay: 3.41844s; animation-duration: 26.0168s;"></div><div class="bokeh" style="width: 271.884px; height: 271.884px; left: 19.6948%; top: 53.4039%; animation-delay: 0.525215s; animation-duration: 23.3711s;"></div><div class="bokeh" style="width: 202.001px; height: 202.001px; left: 36.5223%; top: 25.8717%; animation-delay: 2.45383s; animation-duration: 20.153s;"></div><div class="bokeh gold" style="width: 131.489px; height: 131.489px; left: 44.5397%; top: 63.2754%; animation-delay: 3.5916s; animation-duration: 28.2187s;"></div><div class="bokeh" style="width: 108.47px; height: 108.47px; left: 66.1806%; top: 75.4384%; animation-delay: 1.64305s; animation-duration: 25.4451s;"></div><div class="bokeh gold" style="width: 346.012px; height: 346.012px; left: 86.3871%; top: 15.236%; animation-delay: 2.25889s; animation-duration: 27.1317s;"></div><div class="bokeh" style="width: 342.923px; height: 342.923px; left: 70.1971%; top: 33.7635%; animation-delay: 3.15193s; animation-duration: 28.8072s;"></div><div class="bokeh gold" style="width: 163.045px; height: 163.045px; left: 36.7683%; top: 78.4776%; animation-delay: 3.08183s; animation-duration: 20.6168s;"></div><div class="bokeh gold" style="width: 280.051px; height: 280.051px; left: 19.9831%; top: 51.2556%; animation-delay: 3.22197s; animation-duration: 21.1836s;"></div><div class="bokeh" style="width: 314.95px; height: 314.95px; left: 29.3249%; top: 10.3017%; animation-delay: 2.13199s; animation-duration: 21.7671s;"></div><div class="bokeh gold" style="width: 221.928px; height: 221.928px; left: 97.6158%; top: 97.0028%; animation-delay: 0.446316s; animation-duration: 26.9105s;"></div><div class="bokeh" style="width: 270.677px; height: 270.677px; left: 14.8515%; top: 91.2555%; animation-delay: 2.20429s; animation-duration: 25.1146s;"></div><div class="bokeh gold" style="width: 163.717px; height: 163.717px; left: 91.3405%; top: 42.1656%; animation-delay: 2.19878s; animation-duration: 22.739s;"></div><div class="bokeh" style="width: 231.004px; height: 231.004px; left: 5.4946%; top: 93.5175%; animation-delay: 1.32128s; animation-duration: 22.9773s;"></div><div class="bokeh" style="width: 339.395px; height: 339.395px; left: 76.66%; top: 89.3228%; animation-delay: 4.75908s; animation-duration: 23.3523s;"></div><div class="bokeh" style="width: 110.192px; height: 110.192px; left: 53.1685%; top: 16.4307%; animation-delay: 3.10503s; animation-duration: 25.7106s;"></div><div class="bokeh gold" style="width: 260.892px; height: 260.892px; left: 55.1743%; top: 6.40891%; animation-delay: 2.49792s; animation-duration: 22.7092s;"></div><div class="bokeh gold" style="width: 145.851px; height: 145.851px; left: 53.6287%; top: 10.963%; animation-delay: 3.5098s; animation-duration: 25.3812s;"></div><div class="bokeh gold" style="width: 303.871px; height: 303.871px; left: 24.7202%; top: 98.9935%; animation-delay: 3.12781s; animation-duration: 20.3201s;"></div><div class="bokeh" style="width: 128.815px; height: 128.815px; left: 95.4898%; top: 29.6148%; animation-delay: 0.0545291s; animation-duration: 23.1411s;"></div><div class="bokeh" style="width: 287.625px; height: 287.625px; left: 81.3871%; top: 42.8637%; animation-delay: 3.33263s; animation-duration: 25.1657s;"></div><div class="bokeh" style="width: 331.673px; height: 331.673px; left: 61.3268%; top: 90.2868%; animation-delay: 2.52678s; animation-duration: 21.8533s;"></div><div class="bokeh gold" style="width: 203.794px; height: 203.794px; left: 19.9234%; top: 42.1551%; animation-delay: 3.8214s; animation-duration: 23.9992s;"></div><div class="bokeh" style="width: 275.276px; height: 275.276px; left: 44.5772%; top: 0.527773%; animation-delay: 0.414532s; animation-duration: 21.6392s;"></div><div class="bokeh" style="width: 278.945px; height: 278.945px; left: 57.143%; top: 34.1238%; animation-delay: 0.20005s; animation-duration: 23.2074s;"></div><div class="bokeh" style="width: 107.223px; height: 107.223px; left: 83.3913%; top: 54.6967%; animation-delay: 1.2811s; animation-duration: 26.9762s;"></div><div class="bokeh" style="width: 307.369px; height: 307.369px; left: 37.3046%; top: 9.15316%; animation-delay: 1.50433s; animation-duration: 27.7269s;"></div><div class="bokeh" style="width: 117.612px; height: 117.612px; left: 21.6934%; top: 23.7378%; animation-delay: 3.72578s; animation-duration: 21.0023s;"></div><div class="bokeh" style="width: 252.572px; height: 252.572px; left: 59.4207%; top: 70.8738%; animation-delay: 1.51826s; animation-duration: 28.7793s;"></div><div class="bokeh" style="width: 347.022px; height: 347.022px; left: 14.9249%; top: 14.9773%; animation-delay: 4.63517s; animation-duration: 28.6322s;"></div><div class="bokeh gold" style="width: 190.097px; height: 190.097px; left: 47.7521%; top: 34.6414%; animation-delay: 1.28766s; animation-duration: 26.2922s;"></div><div class="bokeh gold" style="width: 262.18px; height: 262.18px; left: 90.9314%; top: 99.1197%; animation-delay: 1.4274s; animation-duration: 29.5644s;"></div><div class="bokeh" style="width: 346.543px; height: 346.543px; left: 21.4149%; top: 45.285%; animation-delay: 0.800109s; animation-duration: 24.8065s;"></div><div class="bokeh gold" style="width: 308.548px; height: 308.548px; left: 54.6518%; top: 38.5776%; animation-delay: 3.87706s; animation-duration: 21.5132s;"></div><div class="bokeh" style="width: 146.516px; height: 146.516px; left: 87.8951%; top: 28.0236%; animation-delay: 3.18241s; animation-duration: 27.8522s;"></div><div class="bokeh" style="width: 326.999px; height: 326.999px; left: 96.1619%; top: 0.399924%; animation-delay: 4.61961s; animation-duration: 21.6535s;"></div><div class="bokeh" style="width: 185.533px; height: 185.533px; left: 99.7684%; top: 38.8967%; animation-delay: 2.59609s; animation-duration: 27.5783s;"></div><div class="bokeh" style="width: 266.468px; height: 266.468px; left: 67.0943%; top: 50.832%; animation-delay: 4.38981s; animation-duration: 21.6964s;"></div><div class="bokeh" style="width: 155.177px; height: 155.177px; left: 7.55933%; top: 44.6501%; animation-delay: 4.43677s; animation-duration: 26.0454s;"></div><div class="bokeh" style="width: 300.203px; height: 300.203px; left: 35.072%; top: 52.2283%; animation-delay: 3.18376s; animation-duration: 29.3607s;"></div><div class="bokeh gold" style="width: 266.284px; height: 266.284px; left: 88.2975%; top: 64.8301%; animation-delay: 2.63419s; animation-duration: 26.7074s;"></div><div class="bokeh" style="width: 318.619px; height: 318.619px; left: 10.0893%; top: 69.5896%; animation-delay: 4.64479s; animation-duration: 25.4675s;"></div><div class="bokeh gold" style="width: 344.531px; height: 344.531px; left: 77.1629%; top: 48.0211%; animation-delay: 3.15679s; animation-duration: 27.1171s;"></div><div class="bokeh gold" style="width: 150.542px; height: 150.542px; left: 96.6322%; top: 24.8406%; animation-delay: 4.64528s; animation-duration: 25.1709s;"></div><div class="bokeh" style="width: 243.53px; height: 243.53px; left: 10.7066%; top: 99.9732%; animation-delay: 4.16944s; animation-duration: 21.62s;"></div><div class="bokeh gold" style="width: 234.48px; height: 234.48px; left: 61.9715%; top: 72.0705%; animation-delay: 1.99935s; animation-duration: 29.3227s;"></div><div class="bokeh" style="width: 194.018px; height: 194.018px; left: 8.38941%; top: 87.2877%; animation-delay: 1.75744s; animation-duration: 26.424s;"></div><div class="bokeh gold" style="width: 227.308px; height: 227.308px; left: 62.116%; top: 83.7866%; animation-delay: 0.450182s; animation-duration: 22.9477s;"></div><div class="bokeh" style="width: 238.661px; height: 238.661px; left: 27.2718%; top: 21.8807%; animation-delay: 3.43609s; animation-duration: 24.0744s;"></div><div class="bokeh" style="width: 108.537px; height: 108.537px; left: 55.4242%; top: 91.1579%; animation-delay: 2.5708s; animation-duration: 27.821s;"></div><div class="bokeh" style="width: 241.555px; height: 241.555px; left: 6.68266%; top: 83.0487%; animation-delay: 2.95687s; animation-duration: 26.3904s;"></div><div class="bokeh" style="width: 299.078px; height: 299.078px; left: 4.65668%; top: 31.8211%; animation-delay: 0.588833s; animation-duration: 29.9651s;"></div><div class="bokeh" style="width: 115.498px; height: 115.498px; left: 75.6072%; top: 9.63764%; animation-delay: 1.75133s; animation-duration: 29.5598s;"></div><div class="bokeh gold" style="width: 186.788px; height: 186.788px; left: 46.8156%; top: 32.1863%; animation-delay: 1.48749s; animation-duration: 25.1051s;"></div><div class="bokeh" style="width: 148.586px; height: 148.586px; left: 79.5136%; top: 94.1007%; animation-delay: 1.80564s; animation-duration: 20.4586s;"></div><div class="bokeh" style="width: 191.422px; height: 191.422px; left: 62.7754%; top: 12.6592%; animation-delay: 4.04219s; animation-duration: 24.6292s;"></div><div class="bokeh" style="width: 100.604px; height: 100.604px; left: 89.4847%; top: 72.1366%; animation-delay: 3.82401s; animation-duration: 22.7246s;"></div><div class="bokeh" style="width: 101.572px; height: 101.572px; left: 63.1238%; top: 63.2288%; animation-delay: 3.86611s; animation-duration: 24.0451s;"></div><div class="bokeh" style="width: 172.574px; height: 172.574px; left: 49.077%; top: 80.5424%; animation-delay: 0.312008s; animation-duration: 27.0524s;"></div><div class="bokeh" style="width: 266.188px; height: 266.188px; left: 18.9074%; top: 69.5872%; animation-delay: 0.630807s; animation-duration: 28.6572s;"></div><div class="bokeh" style="width: 204.991px; height: 204.991px; left: 60.1028%; top: 52.209%; animation-delay: 0.149055s; animation-duration: 21.7506s;"></div><div class="bokeh gold" style="width: 133.925px; height: 133.925px; left: 25.5106%; top: 95.4518%; animation-delay: 3.32348s; animation-duration: 22.9026s;"></div><div class="bokeh" style="width: 241.29px; height: 241.29px; left: 54.0566%; top: 65.2863%; animation-delay: 3.24435s; animation-duration: 21.5758s;"></div><div class="bokeh gold" style="width: 164.413px; height: 164.413px; left: 78.5113%; top: 76.0288%; animation-delay: 0.951299s; animation-duration: 27.12s;"></div><div class="bokeh gold" style="width: 201.561px; height: 201.561px; left: 84.1558%; top: 58.6063%; animation-delay: 0.602764s; animation-duration: 27.6993s;"></div><div class="bokeh" style="width: 274.694px; height: 274.694px; left: 4.81999%; top: 68.343%; animation-delay: 1.06619s; animation-duration: 24.0954s;"></div><div class="bokeh" style="width: 274.244px; height: 274.244px; left: 33.5071%; top: 8.53234%; animation-delay: 0.686436s; animation-duration: 26.6232s;"></div><div class="bokeh" style="width: 167.327px; height: 167.327px; left: 56.2906%; top: 9.64629%; animation-delay: 1.80802s; animation-duration: 28.7075s;"></div><div class="bokeh" style="width: 242.441px; height: 242.441px; left: 78.4316%; top: 51.6767%; animation-delay: 3.18829s; animation-duration: 23.3759s;"></div><div class="bokeh gold" style="width: 258.881px; height: 258.881px; left: 0.889109%; top: 0.894146%; animation-delay: 3.03474s; animation-duration: 20.9323s;"></div><div class="bokeh gold" style="width: 232.239px; height: 232.239px; left: 58.0917%; top: 15.5176%; animation-delay: 3.59002s; animation-duration: 21.9556s;"></div><div class="bokeh" style="width: 130.843px; height: 130.843px; left: 43.1871%; top: 45.7157%; animation-delay: 0.0248063s; animation-duration: 29.7489s;"></div><div class="bokeh" style="width: 291.648px; height: 291.648px; left: 33.1029%; top: 74.0433%; animation-delay: 4.56901s; animation-duration: 21.7195s;"></div><div class="bokeh" style="width: 243.781px; height: 243.781px; left: 38.7529%; top: 22.4007%; animation-delay: 1.54687s; animation-duration: 25.4127s;"></div><div class="bokeh" style="width: 105.752px; height: 105.752px; left: 13.9703%; top: 60.2192%; animation-delay: 3.90891s; animation-duration: 27.2427s;"></div><div class="bokeh" style="width: 144.722px; height: 144.722px; left: 87.528%; top: 31.2225%; animation-delay: 0.00897918s; animation-duration: 23.0079s;"></div><div class="bokeh" style="width: 319.574px; height: 319.574px; left: 57.7221%; top: 41.7769%; animation-delay: 1.30286s; animation-duration: 20.3133s;"></div><div class="bokeh gold" style="width: 332.076px; height: 332.076px; left: 5.6827%; top: 62.4891%; animation-delay: 1.47656s; animation-duration: 22.6514s;"></div><div class="bokeh gold" style="width: 178.285px; height: 178.285px; left: 65.4723%; top: 68.562%; animation-delay: 1.56308s; animation-duration: 28.2959s;"></div><div class="bokeh" style="width: 133.818px; height: 133.818px; left: 51.6777%; top: 64.5555%; animation-delay: 3.45746s; animation-duration: 21.7739s;"></div><div class="bokeh" style="width: 102.647px; height: 102.647px; left: 2.08514%; top: 88.0284%; animation-delay: 2.54477s; animation-duration: 23.3792s;"></div><div class="bokeh" style="width: 218.347px; height: 218.347px; left: 22.209%; top: 72.0095%; animation-delay: 2.00554s; animation-duration: 23.0685s;"></div><div class="bokeh" style="width: 197.624px; height: 197.624px; left: 14.2122%; top: 52.6823%; animation-delay: 4.2807s; animation-duration: 22.2636s;"></div><div class="bokeh" style="width: 169.982px; height: 169.982px; left: 33.9932%; top: 56.0276%; animation-delay: 3.08041s; animation-duration: 25.8073s;"></div><div class="bokeh gold" style="width: 261.019px; height: 261.019px; left: 15.9113%; top: 72.5263%; animation-delay: 3.71523s; animation-duration: 21.8127s;"></div><div class="bokeh" style="width: 279.829px; height: 279.829px; left: 35.6414%; top: 53.646%; animation-delay: 1.29652s; animation-duration: 21.3757s;"></div><div class="bokeh" style="width: 212.352px; height: 212.352px; left: 32.0449%; top: 92.2754%; animation-delay: 2.15611s; animation-duration: 29.2141s;"></div><div class="bokeh" style="width: 308.439px; height: 308.439px; left: 99.6481%; top: 97.9898%; animation-delay: 0.0693583s; animation-duration: 24.0853s;"></div><div class="bokeh" style="width: 147.364px; height: 147.364px; left: 5.87114%; top: 84.0462%; animation-delay: 0.0942369s; animation-duration: 22.2411s;"></div><div class="bokeh" style="width: 294.392px; height: 294.392px; left: 49.2426%; top: 46.7111%; animation-delay: 4.74566s; animation-duration: 20.4011s;"></div><div class="bokeh" style="width: 246.034px; height: 246.034px; left: 59.0383%; top: 83.2749%; animation-delay: 2.02414s; animation-duration: 21.0113s;"></div><div class="bokeh" style="width: 311.075px; height: 311.075px; left: 28.7045%; top: 17.1609%; animation-delay: 1.87061s; animation-duration: 24.0051s;"></div><div class="bokeh" style="width: 264.405px; height: 264.405px; left: 45.8936%; top: 9.88636%; animation-delay: 1.29696s; animation-duration: 23.0366s;"></div><div class="bokeh gold" style="width: 150.326px; height: 150.326px; left: 87.9202%; top: 77.0835%; animation-delay: 1.26071s; animation-duration: 25.3039s;"></div><div class="bokeh" style="width: 344.595px; height: 344.595px; left: 16.5043%; top: 37.0228%; animation-delay: 0.39853s; animation-duration: 23.6525s;"></div><div class="bokeh" style="width: 207.66px; height: 207.66px; left: 57.3531%; top: 76.2921%; animation-delay: 2.35748s; animation-duration: 23.6101s;"></div><div class="bokeh" style="width: 148.194px; height: 148.194px; left: 32.3381%; top: 62.6935%; animation-delay: 3.98415s; animation-duration: 27.2199s;"></div><div class="bokeh" style="width: 267.454px; height: 267.454px; left: 67.0098%; top: 16.4633%; animation-delay: 4.90607s; animation-duration: 28.0125s;"></div><div class="bokeh" style="width: 253.082px; height: 253.082px; left: 55.1146%; top: 95.514%; animation-delay: 0.696832s; animation-duration: 21.781s;"></div><div class="bokeh" style="width: 181.119px; height: 181.119px; left: 97.3928%; top: 88.2726%; animation-delay: 4.4133s; animation-duration: 20.095s;"></div><div class="bokeh" style="width: 337.093px; height: 337.093px; left: 15.8845%; top: 68.3448%; animation-delay: 3.78155s; animation-duration: 28.0476s;"></div><div class="bokeh" style="width: 343.392px; height: 343.392px; left: 93.6301%; top: 52.6843%; animation-delay: 0.553401s; animation-duration: 20.0145s;"></div><div class="bokeh" style="width: 216.51px; height: 216.51px; left: 79.4822%; top: 46.7604%; animation-delay: 2.25154s; animation-duration: 28.8539s;"></div><div class="bokeh" style="width: 328.713px; height: 328.713px; left: 30.7502%; top: 28.2604%; animation-delay: 4.13284s; animation-duration: 25.4204s;"></div><div class="bokeh" style="width: 326.905px; height: 326.905px; left: 1.73729%; top: 42.9825%; animation-delay: 3.44634s; animation-duration: 27.4095s;"></div><div class="bokeh" style="width: 142.811px; height: 142.811px; left: 60.046%; top: 4.18378%; animation-delay: 0.231249s; animation-duration: 26.937s;"></div><div class="bokeh" style="width: 281.622px; height: 281.622px; left: 44.3443%; top: 84.5333%; animation-delay: 0.392579s; animation-duration: 22.4301s;"></div><div class="bokeh" style="width: 281.553px; height: 281.553px; left: 3.30415%; top: 25.9661%; animation-delay: 0.061671s; animation-duration: 25.5155s;"></div><div class="bokeh" style="width: 260.1px; height: 260.1px; left: 23.8405%; top: 57.3092%; animation-delay: 3.64741s; animation-duration: 29.1418s;"></div><div class="bokeh" style="width: 156.091px; height: 156.091px; left: 45.37%; top: 33.6655%; animation-delay: 3.42109s; animation-duration: 28.3708s;"></div><div class="bokeh" style="width: 283.236px; height: 283.236px; left: 48.9308%; top: 36.0218%; animation-delay: 1.7142s; animation-duration: 21.3922s;"></div><div class="bokeh gold" style="width: 204.803px; height: 204.803px; left: 64.7672%; top: 54.0161%; animation-delay: 0.508495s; animation-duration: 25.9807s;"></div><div class="bokeh" style="width: 161.053px; height: 161.053px; left: 77.9739%; top: 87.5241%; animation-delay: 4.69471s; animation-duration: 27.7636s;"></div><div class="bokeh" style="width: 220.633px; height: 220.633px; left: 24.5427%; top: 33.75%; animation-delay: 4.61615s; animation-duration: 24.7915s;"></div><div class="bokeh" style="width: 332.676px; height: 332.676px; left: 40.1634%; top: 71.9093%; animation-delay: 1.93249s; animation-duration: 28.2039s;"></div><div class="bokeh" style="width: 229.618px; height: 229.618px; left: 57.2881%; top: 41.3194%; animation-delay: 0.104958s; animation-duration: 25.8101s;"></div><div class="bokeh" style="width: 311.531px; height: 311.531px; left: 90.4647%; top: 88.4108%; animation-delay: 0.88276s; animation-duration: 21.5864s;"></div><div class="bokeh" style="width: 191.708px; height: 191.708px; left: 78.9408%; top: 84.1524%; animation-delay: 3.75633s; animation-duration: 21.1582s;"></div><div class="bokeh gold" style="width: 289.831px; height: 289.831px; left: 81.466%; top: 55.5434%; animation-delay: 0.982026s; animation-duration: 28.507s;"></div><div class="bokeh" style="width: 115.798px; height: 115.798px; left: 35.5374%; top: 22.4536%; animation-delay: 0.660309s; animation-duration: 29.4471s;"></div><div class="bokeh gold" style="width: 129.251px; height: 129.251px; left: 77.4697%; top: 56.8279%; animation-delay: 2.46369s; animation-duration: 25.9088s;"></div><div class="bokeh" style="width: 166.595px; height: 166.595px; left: 71.7195%; top: 67.1229%; animation-delay: 2.21055s; animation-duration: 22.0466s;"></div><div class="bokeh" style="width: 238.881px; height: 238.881px; left: 64.6167%; top: 11.9353%; animation-delay: 4.59297s; animation-duration: 21.3108s;"></div><div class="bokeh" style="width: 163.067px; height: 163.067px; left: 89.0556%; top: 87.4913%; animation-delay: 2.73773s; animation-duration: 28.2488s;"></div><div class="bokeh" style="width: 170.892px; height: 170.892px; left: 32.5143%; top: 90.0484%; animation-delay: 3.07915s; animation-duration: 24.8528s;"></div><div class="bokeh gold" style="width: 317.302px; height: 317.302px; left: 37.0702%; top: 44.1097%; animation-delay: 2.32192s; animation-duration: 29.834s;"></div><div class="bokeh" style="width: 164.58px; height: 164.58px; left: 47.2426%; top: 42.9578%; animation-delay: 1.6672s; animation-duration: 26.8899s;"></div><div class="bokeh" style="width: 179.615px; height: 179.615px; left: 95.5134%; top: 61.2039%; animation-delay: 1.48831s; animation-duration: 21.419s;"></div><div class="bokeh" style="width: 206.584px; height: 206.584px; left: 76.8475%; top: 49.2582%; animation-delay: 4.4404s; animation-duration: 24.9567s;"></div><div class="bokeh gold" style="width: 284.586px; height: 284.586px; left: 41.6865%; top: 89.3946%; animation-delay: 4.79435s; animation-duration: 20.7443s;"></div><div class="bokeh gold" style="width: 269.148px; height: 269.148px; left: 1.10001%; top: 23.5875%; animation-delay: 1.47027s; animation-duration: 25.2524s;"></div><div class="bokeh" style="width: 110.794px; height: 110.794px; left: 42.5519%; top: 35.2346%; animation-delay: 4.27267s; animation-duration: 22.9527s;"></div><div class="bokeh" style="width: 245.586px; height: 245.586px; left: 91.6763%; top: 74.4754%; animation-delay: 2.94723s; animation-duration: 25.8151s;"></div><div class="bokeh" style="width: 118.438px; height: 118.438px; left: 14.2974%; top: 50.7185%; animation-delay: 2.26249s; animation-duration: 20.7126s;"></div><div class="bokeh gold" style="width: 292.028px; height: 292.028px; left: 47.0617%; top: 86.5552%; animation-delay: 3.52414s; animation-duration: 24.9917s;"></div><div class="bokeh" style="width: 150.009px; height: 150.009px; left: 31.1581%; top: 98.4999%; animation-delay: 2.56993s; animation-duration: 25.8878s;"></div><div class="bokeh gold" style="width: 270.386px; height: 270.386px; left: 85.545%; top: 50.4485%; animation-delay: 3.19444s; animation-duration: 27.4726s;"></div><div class="bokeh" style="width: 117.643px; height: 117.643px; left: 19.8331%; top: 69.8546%; animation-delay: 3.51269s; animation-duration: 24.1685s;"></div><div class="bokeh" style="width: 133.611px; height: 133.611px; left: 3.03293%; top: 56.3234%; animation-delay: 1.2875s; animation-duration: 22.8735s;"></div><div class="bokeh" style="width: 146.794px; height: 146.794px; left: 57.0228%; top: 44.622%; animation-delay: 2.79482s; animation-duration: 29.3521s;"></div><div class="bokeh" style="width: 137.436px; height: 137.436px; left: 87.2982%; top: 76.2733%; animation-delay: 3.54599s; animation-duration: 29.5703s;"></div><div class="bokeh gold" style="width: 139.892px; height: 139.892px; left: 87.0052%; top: 81.9821%; animation-delay: 1.53507s; animation-duration: 22.5789s;"></div><div class="bokeh" style="width: 100.353px; height: 100.353px; left: 96.3588%; top: 13.0781%; animation-delay: 0.938259s; animation-duration: 24.3393s;"></div><div class="bokeh gold" style="width: 332.815px; height: 332.815px; left: 71.2034%; top: 94.551%; animation-delay: 2.79536s; animation-duration: 23.649s;"></div><div class="bokeh" style="width: 197.395px; height: 197.395px; left: 39.3146%; top: 2.27663%; animation-delay: 4.60337s; animation-duration: 28.4874s;"></div><div class="bokeh gold" style="width: 198.088px; height: 198.088px; left: 48.1783%; top: 51.2464%; animation-delay: 0.761325s; animation-duration: 23.7219s;"></div><div class="bokeh" style="width: 315.374px; height: 315.374px; left: 71.3053%; top: 21.6391%; animation-delay: 0.294998s; animation-duration: 20.0264s;"></div><div class="bokeh gold" style="width: 199.688px; height: 199.688px; left: 68.5003%; top: 56.6746%; animation-delay: 1.21086s; animation-duration: 22.9225s;"></div><div class="bokeh" style="width: 265.182px; height: 265.182px; left: 4.46289%; top: 24.2388%; animation-delay: 1.84333s; animation-duration: 28.7644s;"></div></div>
+<body class="overflow-x-hidden min-h-[100dvh]">
+<div class="fixed inset-0 w-screen h-[100dvh] z-[-1] pointer-events-none" style="transform: translate3d(0,0,0); background: linear-gradient(135deg, #ffecf2 0%, #fcd5ce 100%);"></div>
+<div class="bokeh-container" id="bokeh"></div>
 <!-- Page 1: Landing / Countdown -->
-<section class="page" id="page-1">
+<section class="page active" id="page-1">
 <div class="scroll-container flex flex-col items-center justify-center">
 <div class="reveal-up text-center mb-16 is-visible">
-<h2 class="sacramento md:text-9xl text-primary mb-6 text-4xl">Aftellen naar jouw verjaardag</h2>
+<h2 class="sacramento text-6xl md:text-9xl text-primary mb-6">Aftellen naar jouw verjaardag</h2>
 <div class="mt-8 mb-12 space-y-4">
 <p class="playfair text-2xl md:text-3xl text-primary/70 tracking-widest uppercase">Voor mijn Charlieffe</p>
 <p class="playfair text-xl md:text-2xl text-primary/60 italic font-light tracking-widest">- Jouke</p>
 </div>
 </div>
 <div class="flex flex-wrap justify-center gap-4 md:gap-8 mb-24" id="countdown">
-<div class="timer-unit text-center p-4 md:p-10 min-w-[80px] md:min-w-[140px]">
-<div class="digit-wrapper">
-<span class="block playfair text-5xl font-light text-gray-800 transition-all duration-500" id="days" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">24</span>
+<div class="timer-unit text-center">
+<div class="h-[60px] overflow-hidden relative">
+<span class="block playfair text-5xl font-light text-gray-800 transition-all duration-300" id="days">--</span>
 </div>
 <span class="text-[10px] uppercase tracking-[0.4em] text-accent-gold mt-4 block">Dagen</span>
 </div>
-<div class="timer-unit text-center p-4 md:p-10 min-w-[80px] md:min-w-[140px]">
-<div class="digit-wrapper">
-<span class="block playfair text-5xl font-light text-gray-800 transition-all duration-500" id="hours" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">09</span>
+<div class="timer-unit text-center">
+<div class="h-[60px] overflow-hidden relative">
+<span class="block playfair text-5xl font-light text-gray-800 transition-all duration-300" id="hours">--</span>
 </div>
 <span class="text-[10px] uppercase tracking-[0.4em] text-accent-gold mt-4 block">Uren</span>
 </div>
-<div class="timer-unit text-center p-4 md:p-10 min-w-[80px] md:min-w-[140px]">
-<div class="digit-wrapper">
-<span class="block playfair text-5xl font-light text-gray-800 transition-all duration-500" id="minutes" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">21</span>
+<div class="timer-unit text-center">
+<div class="h-[60px] overflow-hidden relative">
+<span class="block playfair text-5xl font-light text-gray-800 transition-all duration-300" id="minutes">--</span>
 </div>
 <span class="text-[10px] uppercase tracking-[0.4em] text-accent-gold mt-4 block">Minuten</span>
 </div>
-<div class="timer-unit text-center p-4 md:p-10 min-w-[80px] md:min-w-[140px]">
-<div class="digit-wrapper">
-<span class="block playfair text-5xl font-light text-gray-800 transition-all duration-500" id="seconds" style="opacity: 0; transform: translate3d(0px, -10px, 0px);">49</span>
+<div class="timer-unit text-center">
+<div class="h-[60px] overflow-hidden relative">
+<span class="block playfair text-5xl font-light text-gray-800 transition-all duration-300" id="seconds">--</span>
 </div>
 <span class="text-[10px] uppercase tracking-[0.4em] text-accent-gold mt-4 block">Sec</span>
 </div>
 </div>
-<div class="reveal-up is-visible">
-<button class="border text-primary px-10 py-5 tracking-widest uppercase text-[10px] transition-all hover:bg-primary-light/10 border-accent-gold" onclick="const target = new Date('2026-07-29T00:00:00'); if (new Date() &gt;= target) { navigateToPage(2); } else { const modal = document.getElementById('patience-modal'); modal.classList.remove('opacity-0', 'pointer-events-none'); modal.firstElementChild.classList.remove('scale-90'); }">
+<div class="reveal-up is-visible flex flex-col items-center gap-4">
+<button class="border text-primary px-10 py-5 tracking-widest uppercase text-[10px] transition-all hover:bg-primary-light/10 border-accent-gold" onclick="checkDate()">
                 Kijk je mee? <span class="heart-icon">❤️</span>
 </button>
-<button class="mt-4 block mx-auto border border-accent-gold/50 text-primary/70 px-10 py-3 tracking-widest uppercase text-[10px] transition-all hover:bg-primary-light/10" onclick="navigateToPage(2)">Demo Versie</button></div>
+<button class="border border-accent-gold/50 text-primary/70 px-10 py-3 tracking-widest uppercase text-[10px] transition-all hover:bg-primary-light/10" onclick="navigateToPage(2)">Demo Versie</button></div>
 </div>
 </section>
 <!-- Page 2: Story -->
 <section class="page" id="page-2">
 <div class="scroll-container">
-<div class="grid lg:grid-cols-12 gap-12 items-center min-h-[80vh] px-4 md:px-0">
-<div class="lg:col-span-7 image-parallax reveal-up is-visible">
-<img alt="Samen" class="magazine-photo aspect-auto" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaOIH6SUBtes9sVuf1n-h6mv-ehLhQHh97vh3zlVD9WcxHWdqb4eWoQUZxPjScQ99dwjiAPAzXWXwzUEHe0eQ9qDLaaZmLIjI1u11aoTlYcsNwBDDQOCqHOoUK4-pxfdqDI5w5biyv_s4azrdE9EawN24eH3dAnKgmHk7APj-IMAN3qH2sYTU4phlltnFvTwYJn5C3hDXsTeCh1h3XdxAPTbox8Ds1EVpu_U3LMKTISEW3rpN2VAY-8Iu2FvP6Op8LQTOyeEusWGavmXk"/>
+<div class="grid lg:grid-cols-12 gap-12 items-center min-h-[80vh]">
+<div class="lg:col-span-7 image-parallax reveal-up">
+<div class="img-aspect-box rounded-xl">
+<img alt="Samen" class="magazine-photo" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaOIH6SUBtes9sVuf1n-h6mv-ehLhQHh97vh3zlVD9WcxHWdqb4eWoQUZxPjScQ99dwjiAPAzXWXwzUEHe0eQ9qDLaaZmLIjI1u11aoTlYcsNwBDDQOCqHOoUK4-pxfdqDI5w5biyv_s4azrdE9EawN24eH3dAnKgmHk7APj-IMAN3qH2sYTU4phlltnFvTwYJn5C3hDXsTeCh1h3XdxAPTbox8Ds1EVpu_U3LMKTISEW3rpN2VAY-8Iu2FvP6Op8LQTOyeEusWGavmXk"/>
 </div>
-<div class="lg:col-span-5 reveal-up is-visible">
+</div>
+<div class="lg:col-span-5 reveal-up">
 <h2 class="playfair text-5xl md:text-6xl mb-8 leading-tight text-gray-800">Gefeliciteerd!</h2>
 <div class="space-y-6 text-gray-600 leading-relaxed text-lg font-light">
-<p class="">Lieve Charlita, je bent 20 geworden, twins! Gelukkig weer een jaartje ouder. Ik verwacht dat je je heel raar voelt van "ugh, 20", maar ook dankbaar. Dankbaar dat je nu op Bali bent, sama keluarga dan teman.</p><div><br/></div><p class=""></p>
-<blockquote class="italic text-primary border-l-4 border-primary-light pl-6 my-10 text-2xl sacramento py-2">
-                        Charlieffie - 20 jaar</blockquote>
-<p class="">Je lacht zo leuk op deze foto. Het is zo cute.</p>
+<p>Lieve Charlita, je bent 20 geworden, twins! Gelukkig weer een jaartje ouder. Ik verwacht dat je je heel raar voelt van "ugh, 20", maar ook dankbaar. Dankbaar dat je nu op Bali bent, sama keluarga dan teman.</p>
+<blockquote class="italic text-primary border-l-4 border-primary-light pl-6 my-10 text-2xl sacramento py-2">Charlieffie - 20 jaar</blockquote>
+<p>Je lacht zo leuk op deze foto. Het is zo cute.</p>
 </div>
 </div>
 </div>
 <div class="flex justify-center py-20">
-<button class="btn-romantic reveal-up is-visible" onclick="navigateToPage(3)">
+<button class="btn-romantic reveal-up" onclick="navigateToPage(3)">
                 Naar de galerij <span class="heart-icon">→</span>
 </button>
 </div>
 </div>
 </section>
 <!-- Page 3: Gallery -->
-<section class="page active" id="page-3">
+<section class="page" id="page-3">
 <div class="scroll-container">
-<div class="text-center mb-24 reveal-up is-visible">
+<div class="text-center mb-24 reveal-up">
 <h2 class="playfair text-5xl md:text-7xl text-gray-800">Leuke foto's</h2>
 </div>
-<div class="columns-1 md:columns-2 gap-8 space-y-8 lg:columns-2 px-4 md:px-0">
-<div class="break-inside-avoid reveal-up is-visible">
-<div class="image-parallax rounded-xl overflow-hidden shadow-lg is-visible">
-<img alt="Liefde" class="w-full h-auto object-cover aspect-auto" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWFdhogMjS4iwRIYhMmoNEAIRdTTbOz7XuSXldtmbkG1riua63Fm6HU7e2NUCbGa4e-YrKxHeTPtlVB8wKre26CQ60hLaSmd42ct9lfgrSi1qRijlZtM6VSoz2nrCidcvR7kUz-fzX99jMZ0OijEzHOK4qmW4Mk8PvYKdlMdqvNfJMQqVuGAgdcf7GuvMBxW8wrDlWvpSivbXZIfQq1uWkVAbLsimmr-sD3nyHVn7QzaY1Eg8yxJdeswjof-aCN584-JdmYq7v6q2mEAI"/>
+<div class="gallery-section columns-1 md:columns-2 gap-8 space-y-8">
+<div class="break-inside-avoid reveal-up">
+<div class="image-parallax rounded-xl overflow-hidden shadow-lg img-aspect-box" style="aspect-ratio: 4/5;">
+<img alt="Liefde" class="w-full h-full object-cover" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWFdhogMjS4iwRIYhMmoNEAIRdTTbOz7XuSXldtmbkG1riua63Fm6HU7e2NUCbGa4e-YrKxHeTPtlVB8wKre26CQ60hLaSmd42ct9lfgrSi1qRijlZtM6VSoz2nrCidcvR7kUz-fzX99jMZ0OijEzHOK4qmW4Mk8PvYKdlMdqvNfJMQqVuGAgdcf7GuvMBxW8wrDlWvpSivbXZIfQq1uWkVAbLsimmr-sD3nyHVn7QzaY1Eg8yxJdeswjof-aCN584-JdmYq7v6q2mEAI"/>
 </div>
 <p class="sacramento text-2xl text-primary text-center mt-4">Kun je het zien?</p>
 </div>
-<div class="break-inside-avoid reveal-up is-visible">
-<div class="image-parallax rounded-xl overflow-hidden shadow-lg transform rotate-2 is-visible">
-<img alt="Romantic detail" class="w-full h-auto object-cover aspect-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJd9gNpaEcnAW0oRGWMVbrbWl9Kz7Mf0ncevnC8JcgFPd7vFp7sgwRfj2RU6-mOttOfi_xnO5OzICnHv84_3b7DsyQBZyTERHIGoB_hQrEUf6aBU9xXlrA2v9YFJWe9DPszkI2EsbEAOB_miMZj3Ty9RBJElP21tTRB-kT84xCT-0uzqQmkLEna7IW0UMuL4HSQiSGiFfBBQlpXv4zqWUDz6lIKbXbooXqucbGBGU5iUeZblttrTlbQdjFjhUlhSQzBsNbNlTGU7CfhC8"/>
+<div class="break-inside-avoid reveal-up">
+<div class="image-parallax rounded-xl overflow-hidden shadow-lg transform rotate-2 img-aspect-box" style="aspect-ratio: 3/4;">
+<img alt="Romantic detail" class="w-full h-full object-cover" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJd9gNpaEcnAW0oRGWMVbrbWl9Kz7Mf0ncevnC8JcgFPd7vFp7sgwRfj2RU6-mOttOfi_xnO5OzICnHv84_3b7DsyQBZyTERHIGoB_hQrEUf6aBU9xXlrA2v9YFJWe9DPszkI2EsbEAOB_miMZj3Ty9RBJElP21tTRB-kT84xCT-0uzqQmkLEna7IW0UMuL4HSQiSGiFfBBQlpXv4zqWUDz6lIKbXbooXqucbGBGU5iUeZblttrTlbQdjFjhUlhSQzBsNbNlTGU7CfhC8"/>
 </div>
 </div>
-<div class="break-inside-avoid reveal-up is-visible">
-<div class="image-parallax rounded-xl overflow-hidden shadow-lg transform -rotate-2 is-visible">
-<img alt="Couple portrait" class="w-full h-auto object-cover aspect-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFaVEuH-iYu6Ml_WMWfrKJbcMaog5P1344PPtdM7ENM-q2LCVmsWcEn3iFqxj0EnZx5gZm0Sn5TDa7x4lTiliGDCEhs0PMILExF06Dwqr9Z5tzPyokgYfIr9EKzJRiqLo0C6ZzvRh3x9xL-tSgxb8-Pqd8oK1Dna1sbg5_j7ddrxcnYx7htWc9cvPgEbaJb-xgAP0amuthFieyXA-cRSuLbjp6gYFG3U_BoA8zT7V-dOqwkTowX8DaEqtqQASUV3B_5S2uLpKkztS10qU"/>
+<div class="break-inside-avoid reveal-up">
+<div class="image-parallax rounded-xl overflow-hidden shadow-lg transform -rotate-2 img-aspect-box" style="aspect-ratio: 1/1;">
+<img alt="Couple portrait" class="w-full h-full object-cover" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFaVEuH-iYu6Ml_WMWfrKJbcMaog5P1344PPtdM7ENM-q2LCVmsWcEn3iFqxj0EnZx5gZm0Sn5TDa7x4lTiliGDCEhs0PMILExF06Dwqr9Z5tzPyokgYfIr9EKzJRiqLo0C6ZzvRh3x9xL-tSgxb8-Pqd8oK1Dna1sbg5_j7ddrxcnYx7htWc9cvPgEbaJb-xgAP0amuthFieyXA-cRSuLbjp6gYFG3U_BoA8zT7V-dOqwkTowX8DaEqtqQASUV3B_5S2uLpKkztS10qU"/>
 </div>
 <p class="sacramento text-2xl text-primary text-center mt-4">Laarzen passen</p>
 </div>
-<div class="break-inside-avoid reveal-up is-visible"><div class="image-parallax rounded-xl overflow-hidden shadow-lg is-visible">
-<img alt="Shared Moment" class="w-full h-auto object-cover aspect-auto" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmRZoqPyCNe9hIxkHJwD2zkkUginAf7v13921e_3ld8Z2SAKJdsMepLXKkzeTSvVfCicBa3yXvD93b0jYXiL5Zhb1mi2f4xoVn30oiKki9ig7mXOsRH-3lIed3GDpHJ7voZQGQbsled1VOsp3BQGsZtuIy7jNKAzPg8-vvMdUwTwsoTtfpW44t0_oqxkbAxnEs_OZgWdeqbkxlXWADrSvm2XY-onLLwal-f8P2FNUPh5juU4nolkDAqh8AvWr_bnXgqPaQ1n047X6MNwM"/>
+<div class="break-inside-avoid reveal-up">
+<div class="image-parallax rounded-xl overflow-hidden shadow-lg img-aspect-box" style="aspect-ratio: 4/5;">
+<img alt="Shared Moment" class="w-full h-full object-cover" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmRZoqPyCNe9hIxkHJwD2zkkUginAf7v13921e_3ld8Z2SAKJdsMepLXKkzeTSvVfCicBa3yXvD93b0jYXiL5Zhb1mi2f4xoVn30oiKki9ig7mXOsRH-3lIed3GDpHJ7voZQGQbsled1VOsp3BQGsZtuIy7jNKAzPg8-vvMdUwTwsoTtfpW44t0_oqxkbAxnEs_OZgWdeqbkxlXWADrSvm2XY-onLLwal-f8P2FNUPh5juU4nolkDAqh8AvWr_bnXgqPaQ1n047X6MNwM"/>
 </div>
-<p class="sacramento text-2xl text-primary text-center mt-4">Marit met bier</p></div>
-<div class="break-inside-avoid reveal-up is-visible"><div class="grid grid-cols-2 gap-2">
-<div class="rounded-xl overflow-hidden shadow-lg transform rotate-1">
-<img alt="Romantic Detail" class="w-full h-auto object-cover" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1Mme6J-Z1L3QuNqCkPXTK8dhQlSQHLQZ470Z9O4ol60q4o8AMKWD17mXweq9F8fZbVUl0vW-I04Uof9KW0NWP2AOy1UD4vGsh5Hm1SISKp9isVpLPowXYjeu3CNgFzJATX4_EZlQ4bQbm1xVVyzu0dwLUiXo2C3RGr5gxsl48YoXTnz8x1pHjQHgPFdpkbmHaXD_6NNJ_O7W4Yc1ExPwQ822G06YLMA9OBvsZM4rFTvJhOzxaFs_SzICwMniNCyUu1T3flGxe2S0m9wE"/>
+<p class="sacramento text-2xl text-primary text-center mt-4">Marit met bier</p>
 </div>
-<div class="rounded-xl overflow-hidden shadow-lg transform -rotate-1">
-<img alt="Romantic detail detail" class="w-full h-auto object-cover" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQDSB_up0AnQpeK_mx-KzgGUPkM7tN9Zgh2HJmXw3ppp3Hp15FslwOB9soxr1qPZwvSzfGKviHDvS_Tl-oqzJVXoISJmeKHcgFoza2xXN9hXtr6JrQ8dfv-IQM5krvd79ri1vxIm1dJFBhzXwCOdx0AM_MUa1JXKvJJ2HIFAx9vx-MmOL6ZJSLrXhlCSQtObLH5VJu7YrxKDCJfDCVOKKozQpR5-egk6R2_0MmvkUraVgqphNcGJ1HISM8riGcovV8p7B0bvFR5juHPXA"/>
+<div class="break-inside-avoid reveal-up">
+<div class="grid grid-cols-2 gap-2">
+<div class="rounded-xl overflow-hidden shadow-lg transform rotate-1 img-aspect-box" style="aspect-ratio: 1/1;">
+<img alt="Romantic Detail" class="w-full h-full object-cover" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1Mme6J-Z1L3QuNqCkPXTK8dhQlSQHLQZ470Z9O4ol60q4o8AMKWD17mXweq9F8fZbVUl0vW-I04Uof9KW0NWP2AOy1UD4vGsh5Hm1SISKp9isVpLPowXYjeu3CNgFzJATX4_EZlQ4bQbm1xVVyzu0dwLUiXo2C3RGr5gxsl48YoXTnz8x1pHjQHgPFdpkbmHaXD_6NNJ_O7W4Yc1ExPwQ822G06YLMA9OBvsZM4rFTvJhOzxaFs_SzICwMniNCyUu1T3flGxe2S0m9wE"/>
+</div>
+<div class="rounded-xl overflow-hidden shadow-lg transform -rotate-1 img-aspect-box" style="aspect-ratio: 1/1;">
+<img alt="Romantic detail detail" class="w-full h-full object-cover" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQDSB_up0AnQpeK_mx-KzgGUPkM7tN9Zgh2HJmXw3ppp3Hp15FslwOB9soxr1qPZwvSzfGKviHDvS_Tl-oqzJVXoISJmeKHcgFoza2xXN9hXtr6JrQ8dfv-IQM5krvd79ri1vxIm1dJFBhzXwCOdx0AM_MUa1JXKvJJ2HIFAx9vx-MmOL6ZJSLrXhlCSQtObLH5VJu7YrxKDCJfDCVOKKozQpR5-egk6R2_0MmvkUraVgqphNcGJ1HISM8riGcovV8p7B0bvFR5juHPXA"/>
 </div>
 </div>
-<p class="sacramento text-2xl text-primary text-center mt-4">Zelfs jij vindt het erg!</p></div>
-<div class="break-inside-avoid reveal-up is-visible"><div class="image-parallax rounded-xl overflow-hidden shadow-lg is-visible">
-<img alt="Laughter &amp; Joy" class="w-full h-auto object-cover aspect-auto" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDe_IrbOHqkHJ8YbaMz6eXu4389ESICU6DmZagD7LeE2JM7o6mPCY_MyXR8xsJ8YlalVfc734Ge3KwXYSr_CsuOvVjj7dvmroLvE6XFCQNAxqvai5VB2MbCNeObdkNmDUp5fR7WY9fliAqzc-AjQmtKCO7Sh9PTldsapO8tVqQZNC52dNvO9V5_QSZB2kfruX_uuBfJAfIB30MqJlzS3yUKgOIwYLgQZ0-rxlTCaHP2s8tx5i7vL9F2TRC-7Kpo7RUYXAnR0mdcH7X079o"/>
+<p class="sacramento text-2xl text-primary text-center mt-4">Zelfs jij vindt het erg!</p>
 </div>
-<p class="sacramento text-2xl text-primary text-center mt-4">Beetje een Facebook moeder</p></div>
-<div class="break-inside-avoid reveal-up is-visible"><div class="image-parallax rounded-xl overflow-hidden shadow-lg transform -rotate-1 is-visible">
-<img alt="Sunset Memories" class="w-full h-auto object-cover aspect-auto" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjifoj-16bBF7OJwebBITlTUVsycBfQYKvDKxtJOMy7AYgZoGNDz0JR3dX60TmnIvGK2hhoNuPFyyDmWcrD2QVmis_esuWaUxRpaMIGSXdWd2L_jY9YoENp_yyHSinTPxehyKeIhcj9RgHXmHqdNvECC8UcgWzWshQM0YLpmZ6xgKS_D2TguEkq4TBZ9spGZ1_p816_b2XVlXoaZ--2r89-_Nh2z7o43J7MACqAOQeeaIda9TXm1fZKv649Lj3ajMRI4ChJjurUc5xpJ8"/>
+<div class="break-inside-avoid reveal-up">
+<div class="image-parallax rounded-xl overflow-hidden shadow-lg img-aspect-box" style="aspect-ratio: 3/4;">
+<img alt="Laughter &amp; Joy" class="w-full h-full object-cover" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDe_IrbOHqkHJ8YbaMz6eXu4389ESICU6DmZagD7LeE2JM7o6mPCY_MyXR8xsJ8YlalVfc734Ge3KwXYSr_CsuOvVjj7dvmroLvE6XFCQNAxqvai5VB2MbCNeObdkNmDUp5fR7WY9fliAqzc-AjQmtKCO7Sh9PTldsapO8tVqQZNC52dNvO9V5_QSZB2kfruX_uuBfJAfIB30MqJlzS3yUKgOIwYLgQZ0-rxlTCaHP2s8tx5i7vL9F2TRC-7Kpo7RUYXAnR0mdcH7X079o"/>
 </div>
-<p class="sacramento text-2xl text-primary text-center mt-4">Run Forest run!</p></div>
-<div class="break-inside-avoid reveal-up is-visible"><div class="image-parallax rounded-xl overflow-hidden shadow-lg is-visible">
-<img alt="Hand in Hand" class="w-full h-auto object-cover aspect-auto" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6Im7zbwvkBFp-e8kknlGAXkKMXYS2d690qpFtm8D-LQI8Pu96jK3FbSaSC7kMOml2lINtrSnlmi5Dy7NHEeAo6eVnjRBqu-6_x9CXZT9jJHPbuOXX6hV3Va4s_4nNOLRxbzFCbWg-5vhRJIHQwWFULTexuHzLBQonYrULSD_88-Bz6vCQWao3LQ4kBzrDviaZdpWeqTKVn3t_H2EdiqM5yc2yTY7Ev87aG4EokBJ-MkBH9QX51w1Ca9QLeN55yeD8qRTuYxwUUpw2Dww"/>
+<p class="sacramento text-2xl text-primary text-center mt-4">Beetje een Facebook moeder</p>
 </div>
-<p class="sacramento text-2xl text-primary text-center mt-4">12-08-2025</p></div>
-<div class="break-inside-avoid reveal-up is-visible"><div class="image-parallax rounded-xl overflow-hidden shadow-lg transform rotate-2 is-visible">
-<img alt="Quiet Morning" class="w-full h-auto object-cover aspect-auto" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD4Ey4rECmMaHRLE_dfqeUBEEtbKzIE_F6lQlTkKI4b9SQvj7taeeZQH2-qBzvDaOSOP6hBQPr14URx81x0-N6lqYYkSdbpLvOJIOLJ2qItmK0_r86auWI41ZKL4SrySHujyLoaQGLuyrNJgizF2cHfbyJasoQRdQiGrdpAbaLPmsRpzcC6jdLk0H6jf_sAZQPkSB4iwRC22EaUW6FZsxjCUs71CA8zFGKpbDzrZpD7tE-HPCHpymo4o2xDCANIiyMVBM7cD5jTBUtsNg"/>
 </div>
-<p class="sacramento text-2xl text-primary text-center mt-4">Mooie foto's die ik voor je maak :)</p></div>
-<div class="break-inside-avoid reveal-up is-visible"><div class="image-parallax rounded-xl overflow-hidden shadow-lg is-visible">
-<img alt="Adventure Together" class="w-full h-auto object-cover aspect-auto" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC35VgEkkzPrE2kWB8xMcvYhmHx3lRZOHHntg9pQhrbfOD7qEfJuXe8TeoVdPZwdDBoXzMGaJkEnbMgcLFcz73oXOFZqEMI7c8vYr7Nd9rhH7cGuJJ_eSsGQX2jHuMJhUz_7r1JhzpAUCNXkxOV8Knj6a9a4VkKUD-3hU-tIbEEHJ7AgiBFZdoReG4mrZusqiIh8SaPT44x0EoUzq_IJkazwZDvh-GFAykhcKhpDNp-xS--Xdi7H29K7At73-uspsgbtSDotAwPDyIR36Q"/>
-</div>
-<p class="sacramento text-2xl text-primary text-center mt-4"><br/></p></div>
-<div class="break-inside-avoid reveal-up is-visible"><div class="image-parallax rounded-xl overflow-hidden shadow-lg transform -rotate-2 is-visible">
-<img alt="The Little Things" class="w-full h-auto object-cover aspect-auto" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZBycZbQcqfiJPY0-lIX4NkrrZYLYmaxdXSn56NYkaVDY6qOgQ-W5Fl3fcxqOYdGXTr9dzwzKCVuK8ZQhsgsagpGR1PofMYAG_cCZGDwLl_bXnutUisJNPgPF0ihO2CZG5mG8SfSyqr6zv7xVXITkXXWCHtk_Q8uegESzhVzArotGyXiJEpC-wFNYQWIf-9GeH4j1Zar5qK2cbjIX4ZiRxiRqybD0YHwMo0zf2iNhEimbP6XzSykechWQvVLUfUL2QxD1Nkh0ocnSqSWs"/>
-</div>
-<p class="sacramento text-2xl text-primary text-center mt-4">Art</p></div>
-</div>
-<div class="mt-40 mb-20 text-center max-w-3xl mx-auto reveal-up is-visible">
+<div class="mt-40 mb-20 text-center max-w-3xl mx-auto reveal-up">
 <h3 class="sacramento text-6xl text-primary mb-10">Bedankt dat je er bent.</h3>
 <p class="playfair text-xl md:text-2xl text-gray-600 italic leading-relaxed mb-12">Bedankt dat je jarig bent geworden. Bedankt dat ik mee mocht. Bedankt dat je bij de sinaasappelpers stond, en graag gedaan om mezelf 3x te herhalen.</p>
 <div class="flex flex-col md:flex-row justify-center items-center gap-6">
@@ -339,59 +405,60 @@
 </div>
 </section>
 <script>
-    // --- 1. Optimized Bokeh Background ---
-    const bokehContainer = document.getElementById('bokeh');
-    const fragment = document.createDocumentFragment();
-    for (let i = 0; i < 18; i++) {
-        const dot = document.createElement('div');
-        const isGold = Math.random() > 0.75;
-        dot.className = isGold ? 'bokeh gold' : 'bokeh';
-        const size = Math.random() * 250 + 100;
-        dot.style.cssText = `
-            width: ${size}px;
-            height: ${size}px;
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            animation-delay: ${Math.random() * 5}s;
-            animation-duration: ${Math.random() * 10 + 20}s;
-        `;
-        fragment.appendChild(dot);
+    // --- 1. Optimized Bokeh Background using DocumentFragment ---
+    function initBokeh() {
+        const bokehContainer = document.getElementById('bokeh');
+        if (!bokehContainer) return;
+        
+        const fragment = document.createDocumentFragment();
+        const count = window.innerWidth < 768 ? 10 : 25; // Adaptive count for performance
+        
+        for (let i = 0; i < count; i++) {
+            const dot = document.createElement('div');
+            const isGold = Math.random() > 0.8;
+            dot.className = isGold ? 'bokeh gold' : 'bokeh';
+            const size = Math.random() * 200 + 80;
+            dot.style.cssText = `
+                width: ${size}px;
+                height: ${size}px;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                animation-delay: ${Math.random() * 8}s;
+                animation-duration: ${Math.random() * 15 + 15}s;
+            `;
+            fragment.appendChild(dot);
+        }
+        bokehContainer.appendChild(fragment);
     }
-    bokehContainer.appendChild(fragment);
 
-    // --- 2. Performance-Focused Navigation ---
+    // --- 2. Efficient Navigation ---
     function navigateToPage(pageNumber) {
         const pages = document.querySelectorAll('.page');
         const targetPage = document.getElementById(`page-${pageNumber}`);
         
         if (!targetPage) return;
 
-        pages.forEach(p => {
-            p.classList.remove('active');
-        });
-        
+        pages.forEach(p => p.classList.remove('active'));
         targetPage.classList.add('active');
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'instant' });
         
-        // Re-trigger observer for new page content
         requestAnimationFrame(() => initObserver());
     }
 
-    // --- 3. Optimized Scroll Animations ---
+    // --- 3. Optimized Scroll Animations using IntersectionObserver ---
     let observer;
     function initObserver() {
         if (observer) observer.disconnect();
 
         const observerOptions = {
-            threshold: 0.05,
-            rootMargin: '0px 0px -40px 0px'
+            threshold: 0.01,
+            rootMargin: '0px 0px -50px 0px'
         };
 
         observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    // Optimization: Stop observing once visible
                     observer.unobserve(entry.target);
                 }
             });
@@ -405,30 +472,28 @@
         }
     }
 
-    window.addEventListener('DOMContentLoaded', initObserver);
-
-    // --- 4. Hardware-Accelerated Countdown Logic ---
+    // --- 4. Performance-Tuned Countdown ---
     const targetDate = new Date('July 29, 2026 00:00:00').getTime();
 
     function updateDigit(id, value) {
         const el = document.getElementById(id);
         if (!el || el.innerText === value) return;
         
-        // Smooth hardware accelerated transition
         el.style.opacity = '0';
-        el.style.transform = 'translate3d(0, -10px, 0)';
+        el.style.transform = 'translate3d(0, -5px, 0)';
         
         setTimeout(() => {
             el.innerText = value;
-            el.style.transform = 'translate3d(0, 10px, 0)';
-            void el.offsetWidth; // Force reflow
+            el.style.transform = 'translate3d(0, 5px, 0)';
+            // Reflow trigger
+            void el.offsetWidth;
             el.style.opacity = '1';
             el.style.transform = 'translate3d(0, 0, 0)';
-        }, 250);
+        }, 150);
     }
 
     function updateCountdown() {
-        const now = new Date().getTime();
+        const now = Date.now();
         const distance = targetDate - now;
 
         if (distance < 0) {
@@ -448,23 +513,26 @@
         updateDigit('seconds', seconds.toString().padStart(2, '0'));
     }
 
-    // Initial set
-    const initNow = new Date().getTime();
-    const initDist = targetDate - initNow;
-    if (initDist > 0) {
-        const d = document.getElementById('days');
-        const h = document.getElementById('hours');
-        const m = document.getElementById('minutes');
-        const s = document.getElementById('seconds');
-        if(d) d.innerText = Math.floor(initDist / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-        if(h) h.innerText = Math.floor((initDist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-        if(m) m.innerText = Math.floor((initDist % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-        if(s) s.innerText = Math.floor((initDist % (1000 * 60)) / 1000).toString().padStart(2, '0');
+    function checkDate() {
+        const target = new Date('2026-07-29T00:00:00');
+        if (new Date() >= target) {
+            navigateToPage(2);
+        } else {
+            const modal = document.getElementById('patience-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.firstElementChild.classList.remove('scale-90');
+        }
     }
 
-    setInterval(updateCountdown, 1000);
+    window.addEventListener('DOMContentLoaded', () => {
+        initBokeh();
+        initObserver();
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    });
 </script>
-<div class="fixed inset-0 z-[100] flex items-center justify-center bg-primary/20 backdrop-blur-md transition-all duration-500 opacity-0 pointer-events-none min-h-screen" id="patience-modal">
+<!-- Patience Modal -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-primary/20 backdrop-blur-md transition-all duration-500 opacity-0 pointer-events-none" id="patience-modal">
 <div class="bg-surface p-10 md:p-16 rounded-xl border border-accent-gold shadow-2xl max-w-md text-center transform transition-all duration-500 scale-90">
 <h3 class="sacramento text-5xl text-primary mb-6">Nog even geduld...</h3>
 <p class="playfair text-xl text-gray-600 italic mb-8">Nog heel even geduld, Charlieffe... ✨</p>
